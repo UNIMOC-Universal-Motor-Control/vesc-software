@@ -50,7 +50,13 @@
 
 #define ENABLE_GATE()		palSetPad(GPIOB, 11)
 #define DISABLE_GATE()		palClearPad(GPIOB, 11)
-#define GET_GATE_STATUS()	PWMP->tim->BDTR & STM32_TIM_BDTR_MOE
+#define GET_GATE_STATUS()	TIM1->tim->BDTR & STM32_TIM_BDTR_MOE
+
+#define LED_GREEN_ON()			palSetPad(GPIOB, 0)
+#define LED_GREEN_OFF()			palClearPad(GPIOB, 0)
+#define LED_RED_ON()			palSetPad(GPIOB, 1)
+#define LED_RED_OFF()			palClearPad(GPIOB, 1)
+
 
 #ifndef DCCAL_ON
 #define DCCAL_ON()
