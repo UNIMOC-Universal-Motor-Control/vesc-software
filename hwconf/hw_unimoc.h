@@ -21,11 +21,6 @@
 #ifndef HW_UNIMOC_H_
 #define HW_UNIMOC_H_
 
-#include "conf_general.h"
-#include "stm32f4xx_conf.h"
-
-#include HW_HEADER
-
 #define HW_NAME		"UNIMOC"
 
 /*
@@ -39,37 +34,113 @@
  */
 #define HW_HAS_PHASE_SHUNTS
 
-/*
- * The hardware is missing CAN-bus.
- */
-#define HW_HAS_NO_CAN
-
 #define HW_USE_BRK
+
+/*
+ * Disable blackmagic probe output on SWD port
+ */
+#define HAS_BLACKMAGIC				0
+
 
 // Default macros in case there is no hardware support or no need to change them.
 
-#define ENABLE_GATE()		palSetPad(GPIOB, 11)
-#define DISABLE_GATE()		palClearPad(GPIOB, 11)
-#define GET_GATE_STATUS()	TIM1->tim->BDTR & STM32_TIM_BDTR_MOE
+#define ENABLE_GATE()
+#define DISABLE_GATE()
 
-#define LED_GREEN_ON()			palSetPad(GPIOB, 0)
-#define LED_GREEN_OFF()			palClearPad(GPIOB, 0)
-#define LED_RED_ON()			palSetPad(GPIOB, 1)
-#define LED_RED_OFF()			palClearPad(GPIOB, 1)
+#define LED_GREEN_ON()			palSetPad(GPIOB, 10)
+#define LED_GREEN_OFF()			palClearPad(GPIOB, 10)
+#define LED_RED_ON()			palSetPad(GPIOB, 2)
+#define LED_RED_OFF()			palClearPad(GPIOB, 2)
 
 
-#ifndef DCCAL_ON
 #define DCCAL_ON()
-#endif
-#ifndef DCCAL_OFF
 #define DCCAL_OFF()
-#endif
-#ifndef IS_DRV_FAULT
+
 #define IS_DRV_FAULT()			0
-#endif
-#ifndef IS_DRV_FAULT_2
 #define IS_DRV_FAULT_2()		IS_DRV_FAULT()
+
+// Double samples in beginning and end for positive current measurement.
+// Useful when the shunt sense traces have noise that causes offset.
+#define CURR1_DOUBLE_SAMPLE		0
+#define CURR2_DOUBLE_SAMPLE		0
+#define CURR3_DOUBLE_SAMPLE		0
+
+#define AUX_ON()
+#define AUX_OFF()
+
+#define PHASE_FILTER_ON()
+#define PHASE_FILTER_OFF()
+
+#define CURRENT_FILTER_ON()
+#define CURRENT_FILTER_OFF()
+
+/*
+ * ADC Vector
+ *
+ * 0:	IN13	SENS1
+ * 1:	IN1		SENS2
+ * 2:	IN3		SENS3
+ * 3:	IN12	CURR1
+ * 4:	IN0		CURR2
+ * 5:	IN2		CURR3
+ * 6:	IN4		VIN
+ * 7:	IN5		TEMP_MOS
+ * 8:	IN10	EXT
+ * 9:	IN17	VREF
+ * 10:	IN6		TEMP_MOTOR
+ * 11:	IN11	EXT2
+
+ */
+
+#define HW_ADC_CHANNELS			12
+#define HW_ADC_INJ_CHANNELS		3
+#define HW_ADC_NBR_CONV			4
+
+// ADC Indexes
+#define ADC_IND_SENS1			13
+#define ADC_IND_SENS2			1
+#define ADC_IND_SENS3			3
+#define ADC_IND_CURR1			12
+#define ADC_IND_CURR2			0
+#define ADC_IND_CURR3			2
+#define ADC_IND_VIN_SENS		4
+#define ADC_IND_EXT				10
+#define ADC_IND_EXT2			11
+#define ADC_IND_TEMP_MOS		5
+#define ADC_IND_TEMP_MOTOR		6
+#define ADC_IND_VREFINT			17
+
+// ADC macros and settings
+
+// Component parameters (can be overridden)
+#ifndef V_REG
+#define V_REG					3.3
 #endif
+#ifndef VIN_R1
+#define VIN_R1					24000.0
+#endif
+#ifndef VIN_R2
+#define VIN_R2					1200.0
+#endif
+#ifndef CURRENT_AMP_GAIN
+#define CURRENT_AMP_GAIN		20.0
+#endif
+#ifndef CURRENT_SHUNT_RES
+#define CURRENT_SHUNT_RES		(0.0002/3.0)
+#endif
+
+// Input voltage
+#define GET_INPUT_VOLTAGE()		((V_REG / 4095.0) * (float)ADC_Value[ADC_IND_VIN_SENS] * ((VIN_R1 + VIN_R2) / VIN_R2))
+
+// NTC Termistors
+#define NTC_RES(adc_val)		(10000.0 / ((4095.0 / (float)adc_val) - 1.0)) // temp sensor on low side
+#define NTC_TEMP(adc_ind)		(1.0 / ((logf(NTC_RES(ADC_Value[adc_ind]) / 10000.0) / 3380.0) + (1.0 / 298.15)) - 273.15)
+
+#define NTC_RES_MOTOR(adc_val)	(10000.0 / ((4095.0 / (float)adc_val) - 1.0)) // Motor temp sensor on low side
+#define NTC_TEMP_MOTOR(beta)	(1.0 / ((logf(NTC_RES_MOTOR(ADC_Value[ADC_IND_TEMP_MOTOR]) / 10000.0) / beta) + (1.0 / 298.15)) - 273.15)
+
+// Voltage on ADC channel
+#define ADC_VOLTS(ch)			((float)ADC_Value[ch] / 4096.0 * V_REG)
 
 // Double samples in beginning and end for positive current measurement.
 // Useful when the shunt sense traces have noise that causes offset.
@@ -83,42 +154,19 @@
 #define CURR3_DOUBLE_SAMPLE		0
 #endif
 
-#ifndef AUX_ON
-#define AUX_ON()
-#endif
-#ifndef AUX_OFF
-#define AUX_OFF()
-#endif
+// COMM-port ADC GPIOs
+#define HW_ADC_EXT_GPIO			GPIOC
+#define HW_ADC_EXT_PIN			0
+#define HW_ADC_EXT2_GPIO		GPIOC
+#define HW_ADC_EXT2_PIN			1
 
-#ifndef PHASE_FILTER_ON
-#define PHASE_FILTER_ON()
-#endif
-#ifndef PHASE_FILTER_OFF
-#define PHASE_FILTER_OFF()
-#endif
-
-#ifndef CURRENT_FILTER_ON
-#define CURRENT_FILTER_ON()
-#endif
-#ifndef CURRENT_FILTER_OFF
-#define CURRENT_FILTER_OFF()
-#endif
-
-// VCC net voltage
-#ifndef V_REG
-#define V_REG				3.3
-#endif
-
-// Individual MOSFET temperature sensors. Override if available.
-#ifndef NTC_TEMP_MOS1
-#define NTC_TEMP_MOS1()		0.0
-#endif
-#ifndef NTC_TEMP_MOS2
-#define NTC_TEMP_MOS2()		0.0
-#endif
-#ifndef NTC_TEMP_MOS3
-#define NTC_TEMP_MOS3()		0.0
-#endif
+// UART Peripheral
+#define HW_UART_DEV				SD1
+#define HW_UART_GPIO_AF			GPIO_AF_USART1
+#define HW_UART_TX_PORT			GPIOB
+#define HW_UART_TX_PIN			6
+#define HW_UART_RX_PORT			GPIOB
+#define HW_UART_RX_PIN			7
 
 // Sin/Cos Encoder Signals. Override if available
 #ifndef ENCODER_SIN_VOLTS
@@ -151,28 +199,6 @@
 #endif
 #endif
 
-#ifndef GET_CURRENT1_M2
-#ifdef INVERTED_SHUNT_POLARITY
-#define GET_CURRENT1_M2()	(4095 - ADC_Value[ADC_IND_CURR4])
-#else
-#define GET_CURRENT1_M2()	ADC_Value[ADC_IND_CURR4]
-#endif
-#endif
-#ifndef GET_CURRENT2_M2
-#ifdef INVERTED_SHUNT_POLARITY
-#define GET_CURRENT2_M2()	(4095 - ADC_Value[ADC_IND_CURR5])
-#else
-#define GET_CURRENT2_M2()	ADC_Value[ADC_IND_CURR5]
-#endif
-#endif
-#ifndef GET_CURRENT3_M2
-#ifdef INVERTED_SHUNT_POLARITY
-#define GET_CURRENT3_M2()	(4095 - ADC_Value[ADC_IND_CURR6])
-#else
-#define GET_CURRENT3_M2()	ADC_Value[ADC_IND_CURR6]
-#endif
-#endif
-
 #ifndef HW_MAX_CURRENT_OFFSET
 #define HW_MAX_CURRENT_OFFSET 				620
 #endif
@@ -191,31 +217,25 @@
 #define ADC_IND_EXT2 			ADC_IND_EXT
 #endif
 
-// NRF SW SPI (default to spi header pins)
-#ifndef NRF_PORT_CSN
-#define NRF_PORT_CSN			HW_SPI_PORT_NSS
-#endif
-#ifndef NRF_PIN_CSN
-#define NRF_PIN_CSN				HW_SPI_PIN_NSS
-#endif
-#ifndef NRF_PORT_SCK
-#define NRF_PORT_SCK			HW_SPI_PORT_SCK
-#endif
-#ifndef NRF_PIN_SCK
-#define NRF_PIN_SCK				HW_SPI_PIN_SCK
-#endif
-#ifndef NRF_PORT_MOSI
-#define NRF_PORT_MOSI			HW_SPI_PORT_MOSI
-#endif
-#ifndef NRF_PIN_MOSI
-#define NRF_PIN_MOSI			HW_SPI_PIN_MOSI
-#endif
-#ifndef NRF_PORT_MISO
-#define NRF_PORT_MISO			HW_SPI_PORT_MISO
-#endif
-#ifndef NRF_PIN_MISO
-#define NRF_PIN_MISO			HW_SPI_PIN_MISO
-#endif
+// Measurement macros
+#define ADC_V_L1				ADC_Value[ADC_IND_SENS1]
+#define ADC_V_L2				ADC_Value[ADC_IND_SENS2]
+#define ADC_V_L3				ADC_Value[ADC_IND_SENS3]
+#define ADC_V_ZERO				(ADC_Value[ADC_IND_VIN_SENS] / 2)
+
+// Hall/encoder pins
+#define HW_HALL_ENC_GPIO1		GPIOC
+#define HW_HALL_ENC_PIN1		13
+#define HW_HALL_ENC_GPIO2		GPIOC
+#define HW_HALL_ENC_PIN2		14
+#define HW_HALL_ENC_GPIO3		GPIOC
+#define HW_HALL_ENC_PIN3		15
+
+// Macros
+#define READ_HALL1()			palReadPad(HW_HALL_ENC_GPIO1, HW_HALL_ENC_PIN1)
+#define READ_HALL2()			palReadPad(HW_HALL_ENC_GPIO2, HW_HALL_ENC_PIN2)
+#define READ_HALL3()			palReadPad(HW_HALL_ENC_GPIO3, HW_HALL_ENC_PIN3)
+
 
 // CAN device and port (default CAN1)
 #ifndef HW_CANRX_PORT
@@ -235,12 +255,6 @@
 #endif
 #ifndef HW_CAN_DEV
 #define HW_CAN_DEV				CAND1
-#endif
-
-// Hook to call when trying to initialize the permanent NRF failed. Can be
-// used to e.g. reconfigure pins.
-#ifndef HW_PERMANENT_NRF_FAILED_HOOK
-#define HW_PERMANENT_NRF_FAILED_HOOK()
 #endif
 
 #ifndef HW_EARLY_INIT
@@ -316,11 +330,6 @@
 #define ADC_V_L6				ADC_V_L3
 #endif
 
-#ifdef HW_HAS_DRV8323S
-#ifndef DRV8323S_CUSTOM_SETTINGS
-#define DRV8323S_CUSTOM_SETTINGS()
-#endif
-#endif
 
 // Functions
 void hw_init_gpio(void);
