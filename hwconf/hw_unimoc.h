@@ -55,9 +55,8 @@
 
 #define DCCAL_ON()
 #define DCCAL_OFF()
-
 #define IS_DRV_FAULT()			0
-#define IS_DRV_FAULT_2()		IS_DRV_FAULT()
+
 
 // Double samples in beginning and end for positive current measurement.
 // Useful when the shunt sense traces have noise that causes offset.
@@ -89,7 +88,7 @@
  * 9:	IN17	VREF
  * 10:	IN6		TEMP_MOTOR
  * 11:	IN11	EXT2
-
+ *
  */
 
 #define HW_ADC_CHANNELS			12
@@ -236,107 +235,27 @@
 #define READ_HALL2()			palReadPad(HW_HALL_ENC_GPIO2, HW_HALL_ENC_PIN2)
 #define READ_HALL3()			palReadPad(HW_HALL_ENC_GPIO3, HW_HALL_ENC_PIN3)
 
-
-// CAN device and port (default CAN1)
-#ifndef HW_CANRX_PORT
-#define HW_CANRX_PORT			GPIOB
+// Default setting overrides
+#ifndef MCCONF_DEFAULT_MOTOR_TYPE
+#define MCCONF_DEFAULT_MOTOR_TYPE		MOTOR_TYPE_FOC
 #endif
-#ifndef HW_CANRX_PIN
-#define HW_CANRX_PIN			8
+#ifndef MCCONF_L_MAX_ABS_CURRENT
+#define MCCONF_L_MAX_ABS_CURRENT		120.0	// The maximum absolute current above which a fault is generated
 #endif
-#ifndef HW_CANTX_PORT
-#define HW_CANTX_PORT			GPIOB
-#endif
-#ifndef HW_CANTX_PIN
-#define HW_CANTX_PIN			9
-#endif
-#ifndef HW_CAN_GPIO_AF
-#define HW_CAN_GPIO_AF			GPIO_AF_CAN1
-#endif
-#ifndef HW_CAN_DEV
-#define HW_CAN_DEV				CAND1
+#ifndef MCCONF_FOC_SAMPLE_V0_V7
+#define MCCONF_FOC_SAMPLE_V0_V7			true	// Run control loop in both v0 and v7 (requires phase shunts)
 #endif
 
-#ifndef HW_EARLY_INIT
-#define HW_EARLY_INIT()
-#endif
-
-// Default ID
-#ifndef HW_DEFAULT_ID
-#define HW_DEFAULT_ID			(APPCONF_CONTROLLER_ID >= 0 ? APPCONF_CONTROLLER_ID : hw_id_from_uuid())
-#endif
-
-#ifndef HW_LIM_CURRENT
+// Setting limits
 #define HW_LIM_CURRENT			-100.0, 100.0
-#endif
-#ifndef HW_LIM_CURRENT_ABS
+#define HW_LIM_CURRENT_IN		-100.0, 100.0
 #define HW_LIM_CURRENT_ABS		0.0, 120.0
-#endif
-
-#ifndef HW_LIM_FOC_CTRL_LOOP_FREQ
-#define HW_LIM_FOC_CTRL_LOOP_FREQ	3000.0, 30000.0
-#endif
-
-#ifndef HW_FOC_CURRENT_FILTER_LIM
-#define HW_FOC_CURRENT_FILTER_LIM	0.05, 1.0
-#endif
-
-#ifndef COMM_USE_USB
-#define COMM_USE_USB				1
-#endif
-
-#ifndef PTC_TEMP_MOTOR
-#if defined(NTC_RES_MOTOR) && defined(ADC_IND_TEMP_MOTOR)
-#define PTC_TEMP_MOTOR(res, con, tbase)			(((NTC_RES_MOTOR(ADC_Value[ADC_IND_TEMP_MOTOR]) - res) / res) * 100 / con + tbase)
-#define PTC_TEMP_MOTOR_2(res, con, tbase)			(((NTC_RES_MOTOR(ADC_Value[ADC_IND_TEMP_MOTOR_2]) - res) / res) * 100 / con + tbase)
-#else
-#define PTC_TEMP_MOTOR(res, con, tbase)			0.0
-#define PTC_TEMP_MOTOR_2(res, con, tbase)			0.0
-#endif
-#endif
-
-// Default second motor defines
-#ifndef READ_HALL1_2
-#define READ_HALL1_2()			READ_HALL1()
-#endif
-#ifndef READ_HALL2_2
-#define READ_HALL2_2()			READ_HALL2()
-#endif
-#ifndef READ_HALL3_2
-#define READ_HALL3_2()			READ_HALL3()
-#endif
-#ifndef ADC_IND_TEMP_MOS_M2
-#define ADC_IND_TEMP_MOS_M2		ADC_IND_TEMP_MOS
-#endif
-#ifndef NTC_TEMP_MOTOR_2
-#define NTC_TEMP_MOTOR_2(beta)	NTC_TEMP_MOTOR(beta)
-#endif
-#ifndef ADC_IND_TEMP_MOTOR_2
-#define ADC_IND_TEMP_MOTOR_2	ADC_IND_TEMP_MOTOR
-#endif
-#ifndef  MOTOR_TEMP_LPF
-#define MOTOR_TEMP_LPF 			0.01
-#endif
-#ifndef HW_ADC_CHANNELS_EXTRA
-#define HW_ADC_CHANNELS_EXTRA	0
-#endif
-#ifndef ADC_V_L4
-#define ADC_V_L4				ADC_V_L1
-#endif
-#ifndef ADC_V_L5
-#define ADC_V_L5				ADC_V_L2
-#endif
-#ifndef ADC_V_L6
-#define ADC_V_L6				ADC_V_L3
-#endif
-
+#define HW_LIM_VIN				16.0, 75.0
+#define HW_LIM_ERPM				-200e3, 200e3
+#define HW_LIM_DUTY_MIN			0.0, 0.1
+#define HW_LIM_DUTY_MAX			0.0, 0.99
+#define HW_LIM_TEMP_FET			-40.0, 110.0
 
 // Functions
-void hw_init_gpio(void);
-void hw_setup_adc_channels(void);
-void hw_start_i2c(void);
-void hw_stop_i2c(void);
-void hw_try_restore_i2c(void);
-uint8_t hw_id_from_uuid(void);
 
 #endif /* HW_UNIMOC_H_ */
