@@ -73,10 +73,10 @@ void hw_init_gpio(void) {
 	palSetPadMode(HW_HALL_ENC_GPIO2, HW_HALL_ENC_PIN2, PAL_MODE_INPUT_PULLUP);
 	palSetPadMode(HW_HALL_ENC_GPIO3, HW_HALL_ENC_PIN3, PAL_MODE_INPUT_PULLUP);
 
-	// Fault pin
-	palSetPadMode(GPIOB, 12, PAL_MODE_ALTERNATE(GPIO_AF_TIM1) |
-			PAL_STM32_OSPEED_HIGHEST |
-			PAL_STM32_PUDR_PULLDOWN);
+#ifdef HW_USE_BRK
+	// BRK Fault pin
+	palSetPadMode(BRK_GPIO, BRK_PIN, PAL_MODE_ALTERNATE(GPIO_AF_TIM1));
+#endif
 
 	// ADC Pins
 	palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_ANALOG);
@@ -94,7 +94,6 @@ void hw_init_gpio(void) {
 }
 
 void hw_setup_adc_channels(void) {
-
 	/*
 	 * ADC Vector
 	 *
@@ -134,147 +133,17 @@ void hw_setup_adc_channels(void) {
 	// Injected channels
 	ADC_InjectedChannelConfig(ADC1, ADC_Channel_12, 1, ADC_SampleTime_15Cycles);
 	ADC_InjectedChannelConfig(ADC2, ADC_Channel_0, 1, ADC_SampleTime_15Cycles);
-	ADC_InjectedChannelConfig(ADC3, ADC_Channel_, 1, ADC_SampleTime_15Cycles);
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 2, ADC_SampleTime_15Cycles);
-	ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 2, ADC_SampleTime_15Cycles);
-	ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 2, ADC_SampleTime_15Cycles);
-	ADC_InjectedChannelConfig(ADC1, ADC_Channel_10, 3, ADC_SampleTime_15Cycles);
-	ADC_InjectedChannelConfig(ADC2, ADC_Channel_11, 3, ADC_SampleTime_15Cycles);
-	ADC_InjectedChannelConfig(ADC3, ADC_Channel_12, 3, ADC_SampleTime_15Cycles);
+	ADC_InjectedChannelConfig(ADC3, ADC_Channel_2, 1, ADC_SampleTime_15Cycles);
 }
 
 void hw_start_i2c(void) {
-	i2cAcquireBus(&HW_I2C_DEV);
-
-	if (!i2c_running) {
-		palSetPadMode(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN,
-				PAL_MODE_ALTERNATE(HW_I2C_GPIO_AF) |
-				PAL_STM32_OTYPE_OPENDRAIN |
-				PAL_STM32_OSPEED_MID1 |
-				PAL_STM32_PUDR_PULLUP);
-		palSetPadMode(HW_I2C_SDA_PORT, HW_I2C_SDA_PIN,
-				PAL_MODE_ALTERNATE(HW_I2C_GPIO_AF) |
-				PAL_STM32_OTYPE_OPENDRAIN |
-				PAL_STM32_OSPEED_MID1 |
-				PAL_STM32_PUDR_PULLUP);
-
-		i2cStart(&HW_I2C_DEV, &i2cfg);
-		i2c_running = true;
-	}
-
-	i2cReleaseBus(&HW_I2C_DEV);
 }
 
 void hw_stop_i2c(void) {
-	i2cAcquireBus(&HW_I2C_DEV);
-
-	if (i2c_running) {
-		palSetPadMode(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN, PAL_MODE_INPUT);
-		palSetPadMode(HW_I2C_SDA_PORT, HW_I2C_SDA_PIN, PAL_MODE_INPUT);
-
-		i2cStop(&HW_I2C_DEV);
-		i2c_running = false;
-
-	}
-
-	i2cReleaseBus(&HW_I2C_DEV);
 }
 
 /**
  * Try to restore the i2c bus
  */
 void hw_try_restore_i2c(void) {
-	if (i2c_running) {
-		i2cAcquireBus(&HW_I2C_DEV);
-
-		palSetPadMode(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN,
-				PAL_STM32_OTYPE_OPENDRAIN |
-				PAL_STM32_OSPEED_MID1 |
-				PAL_STM32_PUDR_PULLUP);
-
-		palSetPadMode(HW_I2C_SDA_PORT, HW_I2C_SDA_PIN,
-				PAL_STM32_OTYPE_OPENDRAIN |
-				PAL_STM32_OSPEED_MID1 |
-				PAL_STM32_PUDR_PULLUP);
-
-		palSetPad(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN);
-		palSetPad(HW_I2C_SDA_PORT, HW_I2C_SDA_PIN);
-
-		chThdSleep(1);
-
-		for(int i = 0;i < 16;i++) {
-			palClearPad(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN);
-			chThdSleep(1);
-			palSetPad(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN);
-			chThdSleep(1);
-		}
-
-		// Generate start then stop condition
-		palClearPad(HW_I2C_SDA_PORT, HW_I2C_SDA_PIN);
-		chThdSleep(1);
-		palClearPad(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN);
-		chThdSleep(1);
-		palSetPad(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN);
-		chThdSleep(1);
-		palSetPad(HW_I2C_SDA_PORT, HW_I2C_SDA_PIN);
-
-		palSetPadMode(HW_I2C_SCL_PORT, HW_I2C_SCL_PIN,
-				PAL_MODE_ALTERNATE(HW_I2C_GPIO_AF) |
-				PAL_STM32_OTYPE_OPENDRAIN |
-				PAL_STM32_OSPEED_MID1 |
-				PAL_STM32_PUDR_PULLUP);
-
-		palSetPadMode(HW_I2C_SDA_PORT, HW_I2C_SDA_PIN,
-				PAL_MODE_ALTERNATE(HW_I2C_GPIO_AF) |
-				PAL_STM32_OTYPE_OPENDRAIN |
-				PAL_STM32_OSPEED_MID1 |
-				PAL_STM32_PUDR_PULLUP);
-
-		HW_I2C_DEV.state = I2C_STOP;
-		i2cStart(&HW_I2C_DEV, &i2cfg);
-
-		i2cReleaseBus(&HW_I2C_DEV);
-	}
 }
-
-#if defined(HW60_IS_MK3) || defined(HW60_IS_MK4)
-bool hw_sample_shutdown_button(void) {
-	chMtxLock(&shutdown_mutex);
-
-	bt_diff = 0.0;
-
-	for (int i = 0;i < 3;i++) {
-		palSetPadMode(HW_SHUTDOWN_GPIO, HW_SHUTDOWN_PIN, PAL_MODE_INPUT_ANALOG);
-		chThdSleep(5);
-		float val1 = ADC_VOLTS(ADC_IND_SHUTDOWN);
-		chThdSleepMilliseconds(1);
-		float val2 = ADC_VOLTS(ADC_IND_SHUTDOWN);
-		palSetPadMode(HW_SHUTDOWN_GPIO, HW_SHUTDOWN_PIN, PAL_MODE_OUTPUT_PUSHPULL);
-		chThdSleepMilliseconds(1);
-
-		bt_diff += (val1 - val2);
-	}
-
-	chMtxUnlock(&shutdown_mutex);
-
-	return (bt_diff > 0.12);
-}
-
-static void terminal_shutdown_now(int argc, const char **argv) {
-	(void)argc;
-	(void)argv;
-	DISABLE_GATE();
-	HW_SHUTDOWN_HOLD_OFF();
-}
-
-static void terminal_button_test(int argc, const char **argv) {
-	(void)argc;
-	(void)argv;
-
-	for (int i = 0;i < 40;i++) {
-		commands_printf("BT: %d %.2f", HW_SAMPLE_SHUTDOWN(), (double)bt_diff);
-		chThdSleepMilliseconds(100);
-	}
-}
-#endif
-

@@ -36,11 +36,6 @@
 
 #define HW_USE_BRK
 
-/*
- * Disable blackmagic probe output on SWD port
- */
-#define HAS_BLACKMAGIC				0
-
 
 // Default macros in case there is no hardware support or no need to change them.
 
@@ -96,18 +91,18 @@
 #define HW_ADC_NBR_CONV			4
 
 // ADC Indexes
-#define ADC_IND_SENS1			13
+#define ADC_IND_SENS1			0
 #define ADC_IND_SENS2			1
-#define ADC_IND_SENS3			3
-#define ADC_IND_CURR1			12
-#define ADC_IND_CURR2			0
-#define ADC_IND_CURR3			2
-#define ADC_IND_VIN_SENS		4
-#define ADC_IND_EXT				10
+#define ADC_IND_SENS3			2
+#define ADC_IND_CURR1			3
+#define ADC_IND_CURR2			4
+#define ADC_IND_CURR3			5
+#define ADC_IND_VIN_SENS		6
+#define ADC_IND_EXT				8
 #define ADC_IND_EXT2			11
-#define ADC_IND_TEMP_MOS		5
-#define ADC_IND_TEMP_MOTOR		6
-#define ADC_IND_VREFINT			17
+#define ADC_IND_TEMP_MOS		7
+#define ADC_IND_TEMP_MOTOR		10
+#define ADC_IND_VREFINT			9
 
 // ADC macros and settings
 
@@ -167,6 +162,56 @@
 #define HW_UART_RX_PORT			GPIOB
 #define HW_UART_RX_PIN			7
 
+// ICU Peripheral for servo decoding
+#define HW_ICU_TIMER			TIM3
+#define HW_ICU_TIM_CLK_EN()		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE)
+#define HW_ICU_DEV				ICUD3
+#define HW_ICU_CHANNEL			ICU_CHANNEL_1
+#define HW_ICU_GPIO_AF			GPIO_AF_TIM3
+#define HW_ICU_GPIO				GPIOB
+#define HW_ICU_PIN				4
+
+// I2C Peripheral
+#define HW_I2C_DEV				I2CD2
+#define HW_I2C_GPIO_AF			GPIO_AF_I2C2
+#define HW_I2C_SCL_PORT			GPIOB
+#define HW_I2C_SCL_PIN			10
+#define HW_I2C_SDA_PORT			GPIOB
+#define HW_I2C_SDA_PIN			11
+
+// Hall/encoder pins
+#define HW_HALL_ENC_GPIO1		GPIOC
+#define HW_HALL_ENC_PIN1		13
+#define HW_HALL_ENC_GPIO2		GPIOC
+#define HW_HALL_ENC_PIN2		14
+#define HW_HALL_ENC_GPIO3		GPIOC
+#define HW_HALL_ENC_PIN3		15
+#define HW_ENC_TIM				TIM3
+#define HW_ENC_TIM_AF			GPIO_AF_TIM4
+#define HW_ENC_TIM_CLK_EN()		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE)
+#define HW_ENC_EXTI_PORTSRC		EXTI_PortSourceGPIOC
+#define HW_ENC_EXTI_PINSRC		EXTI_PinSource8
+#define HW_ENC_EXTI_CH			EXTI9_5_IRQn
+#define HW_ENC_EXTI_LINE		EXTI_Line8
+#define HW_ENC_EXTI_ISR_VEC		EXTI9_5_IRQHandler
+#define HW_ENC_TIM_ISR_CH		TIM4_IRQn
+#define HW_ENC_TIM_ISR_VEC		TIM4_IRQHandler
+
+#define BRK_GPIO				GPIOB
+#define BRK_PIN					12
+
+// SPI pins
+#define HW_SPI_DEV				SPID1
+#define HW_SPI_GPIO_AF			GPIO_AF_SPI1
+#define HW_SPI_PORT_NSS			GPIOA
+#define HW_SPI_PIN_NSS			15
+#define HW_SPI_PORT_SCK			GPIOC
+#define HW_SPI_PIN_SCK			10
+#define HW_SPI_PORT_MOSI		GPIOC
+#define HW_SPI_PIN_MOSI			12
+#define HW_SPI_PORT_MISO		GPIOC
+#define HW_SPI_PIN_MISO			11
+
 // Sin/Cos Encoder Signals. Override if available
 #ifndef ENCODER_SIN_VOLTS
 #define ENCODER_SIN_VOLTS()		0.0
@@ -221,14 +266,6 @@
 #define ADC_V_L2				ADC_Value[ADC_IND_SENS2]
 #define ADC_V_L3				ADC_Value[ADC_IND_SENS3]
 #define ADC_V_ZERO				(ADC_Value[ADC_IND_VIN_SENS] / 2)
-
-// Hall/encoder pins
-#define HW_HALL_ENC_GPIO1		GPIOC
-#define HW_HALL_ENC_PIN1		13
-#define HW_HALL_ENC_GPIO2		GPIOC
-#define HW_HALL_ENC_PIN2		14
-#define HW_HALL_ENC_GPIO3		GPIOC
-#define HW_HALL_ENC_PIN3		15
 
 // Macros
 #define READ_HALL1()			palReadPad(HW_HALL_ENC_GPIO1, HW_HALL_ENC_PIN1)
