@@ -186,7 +186,7 @@
 #define HW_HALL_ENC_PIN2		14
 #define HW_HALL_ENC_GPIO3		GPIOC
 #define HW_HALL_ENC_PIN3		15
-#define HW_ENC_TIM				TIM3
+#define HW_ENC_TIM				TIM4
 #define HW_ENC_TIM_AF			GPIO_AF_TIM4
 #define HW_ENC_TIM_CLK_EN()		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE)
 #define HW_ENC_EXTI_PORTSRC		EXTI_PortSourceGPIOC
