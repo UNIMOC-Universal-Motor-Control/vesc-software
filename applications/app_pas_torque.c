@@ -45,6 +45,23 @@ static THD_WORKING_AREA(my_thread_wa, 2048);
 // Private variables
 static volatile bool stop_now = true;
 static volatile bool is_running = false;
+const float Ts = 0.01f;
+const float J = 1e-3f;
+const float TsJ = Ts/J;
+// 60kgf at 3V, 0kgf at 1.5V, Nm = kgf * 9.81m/s² * Cranklength
+const float crank_length = 0.175f;
+const float adc_to_nm = VREG/4096.0f*60.0f*9.81f*crank_length/1.5f;
+const float adc_offset = 1.5f/VREG * 4096.0f;
+
+typedef struct {
+	float torque;
+	float cadence;
+	float fake_position;
+	float pedal_power;
+	uint32_t rotations;
+} state_vector;
+
+volatile state_vector x;
 
 // Called when the custom application is started. Start our
 // threads here and set up callbacks.
@@ -81,10 +98,7 @@ static THD_FUNCTION(my_thread, arg) {
 	commands_init_plot("Time", "Torque");
 	commands_plot_add_graph("Torque");
 	commands_plot_add_graph("Cadence");
-	float time = 0.0f;
-	float torque = 0.0f;
-	float cadence = 0.0f;
-	float fake_position = 0.0f;
+
 
 //	for(;;) {
 //		commands_plot_set_graph(0);
@@ -105,13 +119,60 @@ static THD_FUNCTION(my_thread, arg) {
 		timeout_reset(); // Reset timeout if everything is OK.
 
 		// Run your logic here. A lot of functionality is available in mc_interface.h.
+		predict(&x);
 
 
 
-		chThdSleepMilliseconds(10);
+
+
+		chThdSleepMilliseconds((uint32_t)(Ts * 1000.0f));
 	}
 }
 
+
+/**
+ * @brief calculate the mechanic model to estimate cadence and pedal power.
+ */
+void predict(state_vector* x)
+{
+    // torque in Nm from Sensor
+    float adc = adc_to_nm*(ADC_Value[ADC_IND_EXT] - adc_offset);
+
+    // speed in rad/s
+    x->cadence += TsJ * (adc - x->torque);
+
+    // integrate omega for phi
+    x->fake_position += x->cadence * Ts;
+
+    // pedal power
+    x->pedal_power = x->cadence * x->torque;
+
+    // limit position to 2 * pi and count rotations
+    if(x->fake_position > 2.0f*M_PI )
+    {
+    	x->fake_position -= 2.0f*M_PI;
+    	x->rotations++;
+    }
+    else if(x->fake_position < 0.0)
+    {
+    	x->fake_position += 2.0f*M_PI;
+    	x->rotations--;
+    }
+}
+
+/**
+ * @brief correct the mechanic model to estimate pedal power.
+ *
+ * @param x 	 state vector
+ * @param error  state error feedback
+ *
+ */
+void correct(state_vector *x, float out_error[3])
+{
+    x->cadence += error[0];
+    x->fake_position += error[1];
+    x->torque += error[2];
+}
 
 /**
  * @brief calculate the kalman correction.
@@ -121,22 +182,19 @@ static THD_FUNCTION(my_thread, arg) {
  */
 void kalman_correct(const float angle_error, float out_error[3])
 {
-	const float ts = hardware::Tc;
-	const float tsj = ts/settings.mechanics.J;
-
 	/// kalman filter for torque sensor
-	pk[0][2] = p[0][2] - p[2][2] * tsj;
+	pk[0][2] = p[0][2] - p[2][2] * TsJ;
 
-	pk[0][0] = p[0][0] + Q - p[2][0] * tsj - pk[0][2] * tsj;
-	pk[1][0] = p[1][0] + p[0][0]*ts - tsj*(p[1][2] + p[0][2] * ts);
-	pk[2][0] = p[2][0] - tsj*p[2][2];
+	pk[0][0] = p[0][0] + Q - p[2][0] * TsJ - pk[0][2] * TsJ;
+	pk[1][0] = p[1][0] + p[0][0]*Ts - TsJ*(p[1][2] + p[0][2] * Ts);
+	pk[2][0] = p[2][0] - TsJ*p[2][2];
 
-	pk[0][1] = p[0][1] + ts * (p[0][0] - tsj * p[2][0]) - tsj * p[2][1];
-	pk[1][1] = p[1][1] + Q + p[0][1]*ts + ts * (p[1][0] + p[0][0] * ts);
-	pk[2][1] = p[2][1] + p[2][0] * ts;
+	pk[0][1] = p[0][1] + Ts * (p[0][0] - TsJ * p[2][0]) - TsJ * p[2][1];
+	pk[1][1] = p[1][1] + Q + p[0][1]*Ts + Ts * (p[1][0] + p[0][0] * Ts);
+	pk[2][1] = p[2][1] + p[2][0] * Ts;
 
 	//p[0][2] precalculated
-	pk[1][2] = p[1][2] + p[0][2] * ts;
+	pk[1][2] = p[1][2] + p[0][2] * Ts;
 	pk[2][2] = p[2][2] + Q;
 
 	s = 1.0f / (pk[1][1] + R);
