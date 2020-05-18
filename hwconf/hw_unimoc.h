@@ -42,10 +42,10 @@
 #define ENABLE_GATE()
 #define DISABLE_GATE()
 
-#define LED_GREEN_ON()			palSetPad(GPIOB, 10)
-#define LED_GREEN_OFF()			palClearPad(GPIOB, 10)
-#define LED_RED_ON()			palSetPad(GPIOB, 2)
-#define LED_RED_OFF()			palClearPad(GPIOB, 2)
+#define LED_GREEN_ON()			palSetPad(GPIOB, 0)
+#define LED_GREEN_OFF()			palClearPad(GPIOB, 0)
+#define LED_RED_ON()			palSetPad(GPIOB, 1)
+#define LED_RED_OFF()			palClearPad(GPIOB, 1)
 
 
 #define DCCAL_ON()
@@ -175,9 +175,9 @@
 #define HW_I2C_DEV				I2CD2
 #define HW_I2C_GPIO_AF			GPIO_AF_I2C2
 #define HW_I2C_SCL_PORT			GPIOB
-#define HW_I2C_SCL_PIN			10
+#define HW_I2C_SCL_PIN			6
 #define HW_I2C_SDA_PORT			GPIOB
-#define HW_I2C_SDA_PIN			11
+#define HW_I2C_SDA_PIN			7
 
 // Hall/encoder pins
 #define HW_HALL_ENC_GPIO1		GPIOC
