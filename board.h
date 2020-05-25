@@ -17,6 +17,8 @@
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
+#include "hw.h"
+
 /*
  * Setup for STMicroelectronics STM32F4-Discovery board.
  */
@@ -24,8 +26,7 @@
 /*
  * Board identifier.
  */
-#define BOARD_ST_STM32F4_DISCOVERY
-#define BOARD_NAME                  "STMicroelectronics STM32F4-Discovery"
+#define BOARD_NAME                  "VESC"
 
 
 /*
@@ -37,7 +38,11 @@
 #endif
 
 #if !defined(STM32_HSECLK)
+#if defined(HW_HAS_20MHZ_XTAL)
+#define STM32_HSECLK                20000000U
+#else
 #define STM32_HSECLK                8000000U
+#endif
 #endif
 
 /*
@@ -49,8 +54,11 @@
 /*
  * MCU type as defined in the ST header.
  */
+#if defined HW_HAS_STM32F446
+#define STM32F446xx
+#else
 #define STM32F407xx
-
+#endif
 /*
  * IO pins assignments.
  */

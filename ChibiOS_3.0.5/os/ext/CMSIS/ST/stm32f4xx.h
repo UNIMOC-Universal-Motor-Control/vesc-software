@@ -70,7 +70,7 @@
 
 #if !defined (STM32F405xx) && !defined (STM32F415xx) && !defined (STM32F407xx) && !defined (STM32F417xx) && \
     !defined (STM32F427xx) && !defined (STM32F437xx) && !defined (STM32F429xx) && !defined (STM32F439xx) && \
-    !defined (STM32F401xC) && !defined (STM32F401xE) && !defined (STM32F411xE)
+    !defined (STM32F401xC) && !defined (STM32F401xE) && !defined (STM32F411xE) && !defined (STM32F446xx)
   /* #define STM32F405xx */   /*!< STM32F405RG, STM32F405VG and STM32F405ZG Devices */
   /* #define STM32F415xx */   /*!< STM32F415RG, STM32F415VG and STM32F415ZG Devices */
   /* #define STM32F407xx */   /*!< STM32F407VG, STM32F407VE, STM32F407ZG, STM32F407ZE, STM32F407IG  and STM32F407IE Devices */
@@ -154,6 +154,8 @@
   #include "stm32f415xx.h"
 #elif defined(STM32F407xx)
   #include "stm32f407xx.h"
+#elif defined(STM32F446xx)
+  #include "stm32f446xx.h"
 #elif defined(STM32F417xx)
   #include "stm32f417xx.h"
 #elif defined(STM32F427xx)

@@ -36,6 +36,9 @@
 
 #define HW_USE_BRK
 
+#define HW_HAS_STM32F446
+#define HW_HAS_20MHZ_XTAL
+
 
 // Default macros in case there is no hardware support or no need to change them.
 

@@ -25,6 +25,17 @@
 #include "commands.h"
 #include "mc_interface.h"
 
+// Variables
+static volatile bool i2c_running = false;
+
+
+// I2C configuration
+static const I2CConfig i2cfg = {
+		OPMODE_I2C,
+		100000,
+		STD_DUTY_CYCLE
+};
+
 void hw_init_gpio(void) {
 
 	// GPIO clock enable
