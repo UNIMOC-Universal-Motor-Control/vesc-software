@@ -17,7 +17,7 @@
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
-#include "hw.h"
+#include "conf_general.h"
 
 /*
  * Setup for STMicroelectronics STM32F4-Discovery board.
@@ -54,9 +54,10 @@
 /*
  * MCU type as defined in the ST header.
  */
-#if defined HW_HAS_STM32F446
+#if defined(HW_HAS_STM32F446)
 #define STM32F446xx
 #else
+#error "board 407"
 #define STM32F407xx
 #endif
 /*

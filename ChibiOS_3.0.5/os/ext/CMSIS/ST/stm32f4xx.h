@@ -121,7 +121,7 @@
 #if !defined(STM32F405xx) && !defined(STM32F415xx) && !defined(STM32F407xx) && \
 	!defined(STM32F417xx) && !defined(STM32F427xx) && !defined(STM32F437xx) && \
 	!defined(STM32F429xx) && !defined(STM32F439xx) && !defined(STM32F401xC) && \
-	!defined(STM32F401xE) && !defined(STM32F411xE)
+	!defined(STM32F401xE) && !defined(STM32F411xE) && !defined(STM32F446xx)
 #define STM32F407xx
 #endif
 
@@ -153,6 +153,7 @@
 #elif defined(STM32F415xx)
   #include "stm32f415xx.h"
 #elif defined(STM32F407xx)
+#error "407 wird benutzt"
   #include "stm32f407xx.h"
 #elif defined(STM32F446xx)
   #include "stm32f446xx.h"

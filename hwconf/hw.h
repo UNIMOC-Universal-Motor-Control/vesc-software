@@ -21,9 +21,11 @@
 #define HW_H_
 
 #include "conf_general.h"
-#include "stm32f4xx_conf.h"
 
 #include HW_HEADER
+
+#include "stm32f4xx_conf.h"
+
 
 #ifndef HW_NAME
 #error "No hardware name set"

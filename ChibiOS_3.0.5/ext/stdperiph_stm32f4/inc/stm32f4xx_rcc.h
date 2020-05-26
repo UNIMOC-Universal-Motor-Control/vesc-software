@@ -574,7 +574,7 @@ typedef struct
 #define RCC_AHB2Periph_DCMI              ((uint32_t)0x00000001)
 #define RCC_AHB2Periph_CRYP              ((uint32_t)0x00000010)
 #define RCC_AHB2Periph_HASH              ((uint32_t)0x00000020)
-#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F469_479xx)    
+#if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F469_479xx)
 #define RCC_AHB2Periph_RNG               ((uint32_t)0x00000040)
 #endif /* STM32F40_41xxx || STM32F427_437xx || STM32F429_439xx || STM32F469_479xx */
 #define RCC_AHB2Periph_OTG_FS            ((uint32_t)0x00000080)

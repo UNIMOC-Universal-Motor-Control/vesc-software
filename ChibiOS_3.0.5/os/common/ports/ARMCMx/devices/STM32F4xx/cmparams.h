@@ -66,6 +66,9 @@
     !defined(STM32F429xx) && !defined(STM32F439xx) &&                       \
     !defined(STM32F401xC) && !defined(STM32F401xE) &&                       \
     !defined(STM32F411xE) && !defined(STM32F446xx)
+#if defined(STM32F407xx)
+#error "407 in cmparams"
+#endif
 #include "board.h"
 #endif
 
