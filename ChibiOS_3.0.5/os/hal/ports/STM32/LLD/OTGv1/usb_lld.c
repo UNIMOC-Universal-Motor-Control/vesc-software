@@ -37,6 +37,24 @@
 #define EP0_MAX_INSIZE          64
 #define EP0_MAX_OUTSIZE         64
 
+#if defined(STM32F40_41xxx)
+#if defined(BOARD_OTG_NOVBUSSENS)
+#define GCCFG_INIT_VALUE        (GCCFG_NOVBUSSENS | GCCFG_VBUSASEN |        \
+                                 GCCFG_VBUSBSEN | GCCFG_PWRDWN)
+#else
+#define GCCFG_INIT_VALUE        (GCCFG_VBUSASEN | GCCFG_VBUSBSEN |          \
+                                 GCCFG_PWRDWN)
+#endif
+
+#elif defined(STM32F446xx)
+#if defined(BOARD_OTG_NOVBUSSENS)
+#define GCCFG_INIT_VALUE        GCCFG_PWRDWN
+#else
+#define GCCFG_INIT_VALUE        (GCCFG_VBDEN | GCCFG_PWRDWN)
+#endif
+
+#endif
+
 /*===========================================================================*/
 /* Driver exported variables.                                                */
 /*===========================================================================*/
@@ -115,16 +133,19 @@ static const stm32_otg_params_t hsparams = {
 static void otg_core_reset(USBDriver *usbp) {
   stm32_otg_t *otgp = usbp->otg;
 
-  osalSysPolledDelayX(32);
+  /* Wait AHB idle condition.*/
+  while ((otgp->GRSTCTL & GRSTCTL_AHBIDL) == 0)
+    ;
 
   /* Core reset and delay of at least 3 PHY cycles.*/
   otgp->GRSTCTL = GRSTCTL_CSRST;
+  osalSysPolledDelayX(12);
   while ((otgp->GRSTCTL & GRSTCTL_CSRST) != 0)
     ;
 
-  osalSysPolledDelayX(12);
+  osalSysPolledDelayX(18);
 
-  /* Wait AHB idle condition.*/
+  /* Wait AHB idle condition again.*/
   while ((otgp->GRSTCTL & GRSTCTL_AHBIDL) == 0)
     ;
 }
@@ -152,7 +173,7 @@ static void otg_rxfifo_flush(USBDriver *usbp) {
   while ((otgp->GRSTCTL & GRSTCTL_RXFFLSH) != 0)
     ;
   /* Wait for 3 PHY Clocks.*/
-  osalSysPolledDelayX(12);
+  osalSysPolledDelayX(18);
 }
 
 static void otg_txfifo_flush(USBDriver *usbp, uint32_t fifo) {
@@ -162,7 +183,7 @@ static void otg_txfifo_flush(USBDriver *usbp, uint32_t fifo) {
   while ((otgp->GRSTCTL & GRSTCTL_TXFFLSH) != 0)
     ;
   /* Wait for 3 PHY Clocks.*/
-  osalSysPolledDelayX(12);
+  osalSysPolledDelayX(18);
 }
 
 /**
@@ -797,7 +818,7 @@ void usb_lld_start(USBDriver *usbp) {
 #if STM32_USB_USE_OTG1
     if (&USBD1 == usbp) {
       /* OTG FS clock enable and reset.*/
-      rccEnableOTG_FS(false);
+      rccEnableOTG_FS(true);
       rccResetOTG_FS();
 
       /* Enables IRQ vector.*/
@@ -808,7 +829,7 @@ void usb_lld_start(USBDriver *usbp) {
 #if STM32_USB_USE_OTG2
     if (&USBD2 == usbp) {
       /* OTG HS clock enable and reset.*/
-      rccEnableOTG_HS(false);
+      rccEnableOTG_HS(true);
       rccResetOTG_HS();
 
       /* Workaround for the problem described here:
@@ -839,7 +860,7 @@ void usb_lld_start(USBDriver *usbp) {
     otgp->GCCFG = GCCFG_NOVBUSSENS | GCCFG_VBUSASEN | GCCFG_VBUSBSEN |
                   GCCFG_PWRDWN;
 #else
-    otgp->GCCFG = GCCFG_VBUSASEN | GCCFG_VBUSBSEN | GCCFG_PWRDWN;
+    otgp->GCCFG = GCCFG_INIT_VALUE;
 #endif
 
     /* Soft core reset.*/
