@@ -83,11 +83,7 @@
 #else
 #define STM32_PLLM_VALUE                    8
 #endif
-#if defined(HW_HAS_STM32F446)
-#define STM32_PLLN_VALUE                    360
-#else
 #define STM32_PLLN_VALUE                    336
-#endif
 #define STM32_PLLP_VALUE                    2
 #define STM32_PLLQ_VALUE                    7
 #define STM32_HPRE                          STM32_HPRE_DIV1

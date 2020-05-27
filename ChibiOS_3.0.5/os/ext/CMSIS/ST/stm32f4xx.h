@@ -141,6 +141,9 @@
 #elif defined(STM32F411xE)
 #define STM32F411xx
 
+#elif defined(STM32F446xx)
+#define STM32F4XX
+
 #elif defined(STM32F2XX)
 
 #else
@@ -153,7 +156,6 @@
 #elif defined(STM32F415xx)
   #include "stm32f415xx.h"
 #elif defined(STM32F407xx)
-#error "407 wird benutzt"
   #include "stm32f407xx.h"
 #elif defined(STM32F446xx)
   #include "stm32f446xx.h"

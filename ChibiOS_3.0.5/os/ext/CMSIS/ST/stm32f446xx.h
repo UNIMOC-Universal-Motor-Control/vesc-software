@@ -6921,7 +6921,7 @@ typedef struct
 #define FLASH_SR_PGSERR                FLASH_SR_PGSERR_Msk                     
 #define FLASH_SR_RDERR_Pos            (8U)                                    
 #define FLASH_SR_RDERR_Msk            (0x1U << FLASH_SR_RDERR_Pos)             /*!< 0x00000100 */
-#define FLASH_SR_RDERR                FLASH_SR_RDERR_Msk                     
+//#define FLASH_SR_RDERR                FLASH_SR_RDERR_Msk
 #define FLASH_SR_BSY_Pos               (16U)                                   
 #define FLASH_SR_BSY_Msk               (0x1U << FLASH_SR_BSY_Pos)              /*!< 0x00010000 */
 #define FLASH_SR_BSY                   FLASH_SR_BSY_Msk                        
@@ -6936,7 +6936,7 @@ typedef struct
 #define FLASH_CR_MER_Pos               (2U)                                    
 #define FLASH_CR_MER_Msk               (0x1U << FLASH_CR_MER_Pos)              /*!< 0x00000004 */
 #define FLASH_CR_MER                   FLASH_CR_MER_Msk                        
-#define FLASH_CR_MER1                        FLASH_CR_MER
+//#define FLASH_CR_MER1                        FLASH_CR_MER
 #define FLASH_CR_SNB_Pos               (3U)                                    
 #define FLASH_CR_SNB_Msk               (0x1FU << FLASH_CR_SNB_Pos)             /*!< 0x000000F8 */
 #define FLASH_CR_SNB                   FLASH_CR_SNB_Msk                        
@@ -6952,7 +6952,7 @@ typedef struct
 #define FLASH_CR_PSIZE_1               (0x2U << FLASH_CR_PSIZE_Pos)            /*!< 0x00000200 */
 #define FLASH_CR_MER2_Pos              (15U)                                   
 #define FLASH_CR_MER2_Msk              (0x1U << FLASH_CR_MER2_Pos)             /*!< 0x00008000 */
-#define FLASH_CR_MER2                  FLASH_CR_MER2_Msk                       
+//#define FLASH_CR_MER2                  FLASH_CR_MER2_Msk
 #define FLASH_CR_STRT_Pos              (16U)                                   
 #define FLASH_CR_STRT_Msk              (0x1U << FLASH_CR_STRT_Pos)             /*!< 0x00010000 */
 #define FLASH_CR_STRT                  FLASH_CR_STRT_Msk                       
@@ -7016,7 +7016,7 @@ typedef struct
 #define FLASH_OPTCR_nWRP_11            0x08000000U                             
 #define FLASH_OPTCR_DB1M_Pos           (30U)                                   
 #define FLASH_OPTCR_DB1M_Msk           (0x1U << FLASH_OPTCR_DB1M_Pos)          /*!< 0x40000000 */
-#define FLASH_OPTCR_DB1M               FLASH_OPTCR_DB1M_Msk                    
+//#define FLASH_OPTCR_DB1M               FLASH_OPTCR_DB1M_Msk
 #define FLASH_OPTCR_SPRMOD_Pos         (31U)                                   
 #define FLASH_OPTCR_SPRMOD_Msk         (0x1U << FLASH_OPTCR_SPRMOD_Pos)        /*!< 0x80000000 */
 #define FLASH_OPTCR_SPRMOD             FLASH_OPTCR_SPRMOD_Msk                  
@@ -15949,7 +15949,7 @@ typedef struct
 #define FSMC_IRQn              FMC_IRQn
 
 /* Aliases for __IRQHandler */
-#define FSMC_IRQHandler        FMC_IRQHandler
+//#define FSMC_IRQHandler        FMC_IRQHandler
 #define QuadSPI_IRQHandler     QUADSPI_IRQHandler
 
 /**

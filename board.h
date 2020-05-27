@@ -17,7 +17,7 @@
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
-#include "conf_general.h"
+//#include "conf_general.h"
 
 /*
  * Setup for STMicroelectronics STM32F4-Discovery board.
@@ -38,11 +38,11 @@
 #endif
 
 #if !defined(STM32_HSECLK)
-#if defined(HW_HAS_20MHZ_XTAL)
+//#if defined(HW_HAS_20MHZ_XTAL)
 #define STM32_HSECLK                20000000U
-#else
-#define STM32_HSECLK                8000000U
-#endif
+//#else
+//#define STM32_HSECLK                8000000U
+//#endif
 #endif
 
 /*
@@ -54,12 +54,11 @@
 /*
  * MCU type as defined in the ST header.
  */
-#if defined(HW_HAS_STM32F446)
+//#if defined(HW_HAS_STM32F446)
 #define STM32F446xx
-#else
-#error "board 407"
-#define STM32F407xx
-#endif
+//#else
+//#define STM32F407xx
+//#endif
 /*
  * IO pins assignments.
  */
