@@ -20,7 +20,7 @@ ifeq ($(USE_CPPOPT),)
   USE_CPPOPT = -fno-rtti
 endif
 
-# Enable this if you want the linker to remove unused code and data
+# Enable this if you want the linker to remove unused code and data.
 ifeq ($(USE_LINK_GC),)
   USE_LINK_GC = yes
 endif
@@ -30,19 +30,14 @@ ifeq ($(USE_LDOPT),)
   USE_LDOPT = 
 endif
 
-# Enable this if you want link time optimizations (LTO)
+# Enable this if you want link time optimizations (LTO).
 ifeq ($(USE_LTO),)
-  USE_LTO = no
-endif
-
-# If enabled, this option allows to compile the application in THUMB mode.
-ifeq ($(USE_THUMB),)
-  USE_THUMB = yes
+  USE_LTO = yes
 endif
 
 # Enable this if you want to see the full log while compiling.
 ifeq ($(USE_VERBOSE_COMPILE),)
-  USE_VERBOSE_COMPILE = yes
+  USE_VERBOSE_COMPILE = no
 endif
 
 # If enabled, this option makes the build process faster by not compiling
@@ -71,14 +66,14 @@ ifeq ($(USE_EXCEPTIONS_STACKSIZE),)
   USE_EXCEPTIONS_STACKSIZE = 0x800
 endif
 
-# Enables the use of FPU on Cortex-M4 (no, softfp, hard).
+# Enables the use of FPU (no, softfp, hard).
 ifeq ($(USE_FPU),)
   USE_FPU = hard
 endif
 
-# Enable this if you really want to use the STM FWLib.
-ifeq ($(USE_FWLIB),)
-  USE_FWLIB = yes
+# FPU-related options.
+ifeq ($(USE_FPU_OPT),)
+  USE_FPU_OPT = -mfloat-abi=$(USE_FPU) -mfpu=fpv4-sp-d16
 endif
 
 #
@@ -86,31 +81,40 @@ endif
 ##############################################################################
 
 ##############################################################################
-# Project, sources and paths
+# Project, target, sources and paths
 #
 
 # Define project name here
-PROJECT = BLDC_4_ChibiOS
+PROJECT = vesc
 
-# Imported source files and paths
-CHIBIOS = ChibiOS_3.0.5
-# Startup files
-include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.mk
-# HAL-OSAL files
+# Target settings.
+MCU  = cortex-m4
+
+# Imported source files and paths.
+BASEDIR  := ../..
+CHIBIOS  := $(BASEDIR)/chibios
+CONFDIR  := .
+BUILDDIR := ./build
+DEPDIR   := ./.dep
+
+# Licensing files.
+include $(CHIBIOS)/os/license/license.mk
+# Startup files.
+include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.mk
+# HAL-OSAL files (optional).
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/hal/ports/STM32/STM32F4xx/platform.mk
-include $(CHIBIOS)/os/hal/osal/rt/osal.mk
-# RTOS files
+include $(CHIBIOS)/os/hal/osal/rt-nil/osal.mk
+# RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
-include $(CHIBIOS)/os/rt/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
+include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Other files
-include hwconf/hwconf.mk
-include applications/applications.mk
-include nrf/nrf.mk
-include libcanard/canard.mk
-include imu/imu.mk
-include compression/compression.mk
-include blackmagic/blackmagic.mk
+include $(BASEDIR)/applications/applications.mk
+include $(BASEDIR)/nrf/nrf.mk
+include $(BASEDIR)/libcanard/canard.mk
+include $(BASEDIR)/imu/imu.mk
+include $(BASEDIR)/compression/compression.mk
+include $(BASEDIR)/blackmagic/blackmagic.mk
 
 # Define linker script file here
 LDSCRIPT= ld_eeprom_emu.ld
@@ -126,40 +130,39 @@ CSRC = $(STARTUPSRC) \
        $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
        $(CHIBIOS)/os/various/syscalls.c \
        board.c \
-       main.c \
-       comm_usb_serial.c \
-       irq_handlers.c \
-       buffer.c \
-       comm_usb.c \
-       crc.c \
-       digital_filter.c \
-       ledpwm.c \
-       mcpwm.c \
-       servo_dec.c \
-       utils.c \
-       servo_simple.c \
-       packet.c \
-       terminal.c \
-       conf_general.c \
-       eeprom.c \
-       commands.c \
-       timeout.c \
-       comm_can.c \
-       ws2811.c \
-       led_external.c \
-       encoder.c \
-       flash_helper.c \
-       mc_interface.c \
-       mcpwm_foc.c \
-       gpdrive.c \
-       confgenerator.c \
-       timer.c \
-       i2c_bb.c \
-       virtual_motor.c \
-       shutdown.c \
-       mempools.c \
-       worker.c \
-       $(HWSRC) \
+       $(BASEDIR)/main.c \
+       $(BASEDIR)/comm_usb_serial.c \
+       $(BASEDIR)/irq_handlers.c \
+       $(BASEDIR)/buffer.c \
+       $(BASEDIR)/comm_usb.c \
+       $(BASEDIR)/crc.c \
+       $(BASEDIR)/digital_filter.c \
+       $(BASEDIR)/ledpwm.c \
+       $(BASEDIR)/mcpwm.c \
+       $(BASEDIR)/servo_dec.c \
+       $(BASEDIR)/utils.c \
+       $(BASEDIR)/servo_simple.c \
+       $(BASEDIR)/packet.c \
+       $(BASEDIR)/terminal.c \
+       $(BASEDIR)/conf_general.c \
+       $(BASEDIR)/eeprom.c \
+       $(BASEDIR)/commands.c \
+       $(BASEDIR)/timeout.c \
+       $(BASEDIR)/comm_can.c \
+       $(BASEDIR)/ws2811.c \
+       $(BASEDIR)/led_external.c \
+       $(BASEDIR)/encoder.c \
+       $(BASEDIR)/flash_helper.c \
+       $(BASEDIR)/mc_interface.c \
+       $(BASEDIR)/mcpwm_foc.c \
+       $(BASEDIR)/gpdrive.c \
+       $(BASEDIR)/confgenerator.c \
+       $(BASEDIR)/timer.c \
+       $(BASEDIR)/i2c_bb.c \
+       $(BASEDIR)/virtual_motor.c \
+       $(BASEDIR)/shutdown.c \
+       $(BASEDIR)/mempools.c \
+       $(BASEDIR)/worker.c \
        $(APPSRC) \
        $(NRFSRC) \
        $(CANARDSRC) \
@@ -169,38 +172,20 @@ CSRC = $(STARTUPSRC) \
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CPPSRC =
+CPPSRC = $(ALLCPPSRC)
 
-# C sources to be compiled in ARM mode regardless of the global setting.
-# NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
-#       option that results in lower performance and larger code size.
-ACSRC =
+# List ASM source files here.
+ASMSRC = $(ALLASMSRC)
 
-# C++ sources to be compiled in ARM mode regardless of the global setting.
-# NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
-#       option that results in lower performance and larger code size.
-ACPPSRC =
+# List ASM with preprocessor source files here.
+ASMXSRC = $(ALLXASMSRC)
 
-# C sources to be compiled in THUMB mode regardless of the global setting.
-# NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
-#       option that results in lower performance and larger code size.
-TCSRC =
-
-# C sources to be compiled in THUMB mode regardless of the global setting.
-# NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
-#       option that results in lower performance and larger code size.
-TCPPSRC =
-
-# List ASM source files here
-ASMSRC = $(STARTUPASM) $(PORTASM) $(OSALASM)
-
-INCDIR = $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
-         $(HALINC) $(PLATFORMINC) \
+# Inclusion directories.
+INCDIR = $(CONFDIR) $(ALLINC) \
          $(CHIBIOS)/os/various \
          $(CHIBIOS)/os/hal/lib/streams \
          mcconf \
          appconf \
-         $(HWINC) \
          $(APPINC) \
          $(NRFINC) \
          $(CANARDINC) \
@@ -208,47 +193,14 @@ INCDIR = $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
          $(COMPRESSIONINC) \
          $(BLACKMAGICINC)
 
-#
-# Project, sources and paths
-##############################################################################
+# Define C warning options here.
+CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
 
-##############################################################################
-# Compiler settings
-#
-
-MCU  = cortex-m4
-
-#TRGT = arm-elf-
-TRGT = arm-none-eabi-
-CC   = $(TRGT)gcc
-CPPC = $(TRGT)g++
-# Enable loading with g++ only if you need C++ runtime support.
-# NOTE: You can use C++ even without C++ support if you are careful. C++
-#       runtime support makes code size explode.
-LD   = $(TRGT)gcc
-#LD   = $(TRGT)g++
-CP   = $(TRGT)objcopy
-AS   = $(TRGT)gcc -x assembler-with-cpp
-AR   = $(TRGT)ar
-OD   = $(TRGT)objdump
-SZ   = $(TRGT)size
-HEX  = $(CP) -O ihex
-BIN  = $(CP) -O binary
-
-# ARM-specific options here
-AOPT =
-
-# THUMB-specific options here
-TOPT = -mthumb -DTHUMB
-
-# Define C warning options here
-CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes -Wshadow
-
-# Define C++ warning options here
+# Define C++ warning options here.
 CPPWARN = -Wall -Wextra -Wundef
 
 #
-# Compiler settings
+# Project, target, sources and paths
 ##############################################################################
 
 ##############################################################################
@@ -271,8 +223,24 @@ ULIBDIR =
 ULIBS = -lm
 
 #
-# End of user defines
+# End of user section
 ##############################################################################
+
+##############################################################################
+# Common rules
+#
+
+RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk
+include $(RULESPATH)/arm-none-eabi.mk
+include $(RULESPATH)/rules.mk
+
+#
+# Common rules
+##############################################################################
+
+##############################################################################
+# Custom rules
+#
 
 ifeq ($(USE_FWLIB),yes)
   include $(CHIBIOS)/ext/stdperiph_stm32f4/stm32lib.mk
@@ -306,5 +274,6 @@ upload-pi-remote: build/$(PROJECT).elf
 debug-start:
 	openocd -f stm32-bv_openocd.cfg
 
-RULESPATH = $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC
-include $(RULESPATH)/rules.mk
+#
+# Custom rules
+##############################################################################
