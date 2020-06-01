@@ -32,7 +32,7 @@ endif
 
 # Enable this if you want link time optimizations (LTO).
 ifeq ($(USE_LTO),)
-  USE_LTO = yes
+  USE_LTO = no
 endif
 
 # Enable this if you want to see the full log while compiling.
@@ -91,9 +91,8 @@ PROJECT = vesc
 MCU  = cortex-m4
 
 # Imported source files and paths.
-BASEDIR  := ../..
-CHIBIOS  := $(BASEDIR)/chibios
-CONFDIR  := .
+CHIBIOS  := ../../chibios
+CONFDIR  := ./cfg
 BUILDDIR := ./build
 DEPDIR   := ./.dep
 
@@ -104,71 +103,26 @@ include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.m
 # HAL-OSAL files (optional).
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/hal/ports/STM32/STM32F4xx/platform.mk
+include $(CHIBIOS)/os/hal/boards/ST_NUCLEO64_F446RE/board.mk
 include $(CHIBIOS)/os/hal/osal/rt-nil/osal.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
-# Other files
-include $(BASEDIR)/applications/applications.mk
-include $(BASEDIR)/nrf/nrf.mk
-include $(BASEDIR)/libcanard/canard.mk
-include $(BASEDIR)/imu/imu.mk
-include $(BASEDIR)/compression/compression.mk
-include $(BASEDIR)/blackmagic/blackmagic.mk
+# Auto-build files in ./source recursively.
+include $(CHIBIOS)/tools/mk/autobuild.mk
+# Other files (optional).
+include $(CHIBIOS)/test/lib/test.mk
+include $(CHIBIOS)/test/rt/rt_test.mk
+include $(CHIBIOS)/test/oslib/oslib_test.mk
 
 # Define linker script file here
-LDSCRIPT= ld_eeprom_emu.ld
+LDSCRIPT= $(STARTUPLD)/STM32F446xE.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CSRC = $(STARTUPSRC) \
-       $(KERNSRC) \
-       $(PORTSRC) \
-       $(OSALSRC) \
-       $(HALSRC) \
-       $(PLATFORMSRC) \
-       $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
-       $(CHIBIOS)/os/various/syscalls.c \
-       board.c \
-       $(BASEDIR)/main.c \
-       $(BASEDIR)/comm_usb_serial.c \
-       $(BASEDIR)/irq_handlers.c \
-       $(BASEDIR)/buffer.c \
-       $(BASEDIR)/comm_usb.c \
-       $(BASEDIR)/crc.c \
-       $(BASEDIR)/digital_filter.c \
-       $(BASEDIR)/ledpwm.c \
-       $(BASEDIR)/mcpwm.c \
-       $(BASEDIR)/servo_dec.c \
-       $(BASEDIR)/utils.c \
-       $(BASEDIR)/servo_simple.c \
-       $(BASEDIR)/packet.c \
-       $(BASEDIR)/terminal.c \
-       $(BASEDIR)/conf_general.c \
-       $(BASEDIR)/eeprom.c \
-       $(BASEDIR)/commands.c \
-       $(BASEDIR)/timeout.c \
-       $(BASEDIR)/comm_can.c \
-       $(BASEDIR)/ws2811.c \
-       $(BASEDIR)/led_external.c \
-       $(BASEDIR)/encoder.c \
-       $(BASEDIR)/flash_helper.c \
-       $(BASEDIR)/mc_interface.c \
-       $(BASEDIR)/mcpwm_foc.c \
-       $(BASEDIR)/gpdrive.c \
-       $(BASEDIR)/confgenerator.c \
-       $(BASEDIR)/timer.c \
-       $(BASEDIR)/i2c_bb.c \
-       $(BASEDIR)/virtual_motor.c \
-       $(BASEDIR)/shutdown.c \
-       $(BASEDIR)/mempools.c \
-       $(BASEDIR)/worker.c \
-       $(APPSRC) \
-       $(NRFSRC) \
-       $(CANARDSRC) \
-       $(IMUSRC) \
-       $(COMPRESSIONSRC) \
-       $(BLACKMAGICSRC)
+CSRC = $(ALLCSRC) \
+       $(TESTSRC) \
+       $(CHIBIOS)/demos/STM32/RT-STM32F446RE-NUCLEO64/main.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -181,17 +135,7 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC) \
-         $(CHIBIOS)/os/various \
-         $(CHIBIOS)/os/hal/lib/streams \
-         mcconf \
-         appconf \
-         $(APPINC) \
-         $(NRFINC) \
-         $(CANARDINC) \
-         $(IMUINC) \
-         $(COMPRESSIONINC) \
-         $(BLACKMAGICINC)
+INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC)
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
@@ -220,7 +164,7 @@ UINCDIR =
 ULIBDIR =
 
 # List all user libraries here
-ULIBS = -lm
+ULIBS =
 
 #
 # End of user section
@@ -241,38 +185,6 @@ include $(RULESPATH)/rules.mk
 ##############################################################################
 # Custom rules
 #
-
-ifeq ($(USE_FWLIB),yes)
-  include $(CHIBIOS)/ext/stdperiph_stm32f4/stm32lib.mk
-  CSRC += $(STM32SRC)
-  INCDIR += $(STM32INC)
-  USE_OPT += -DUSE_STDPERIPH_DRIVER
-endif
-
-build/$(PROJECT).bin: build/$(PROJECT).elf 
-	$(BIN) build/$(PROJECT).elf build/$(PROJECT).bin --gap-fill 0xFF
-
-# Program
-upload: build/$(PROJECT).bin
-#	qstlink2 --cli --erase --write build/$(PROJECT).bin
-#	openocd -f interface/stlink-v2.cfg -c "set WORKAREASIZE 0x2000" -f target/stm32f4x_stlink.cfg -c "program build/$(PROJECT).elf verify reset" # Older openocd
-	openocd -f board/stm32f4discovery.cfg -c "reset_config trst_only combined" -c "program build/$(PROJECT).elf verify reset exit" # For openocd 0.9
-
-clear_option_bytes:
-	openocd -f board/stm32f4discovery.cfg -c "init" -c "stm32f2x unlock 0" -c "mww 0x40023C08 0x08192A3B; mww 0x40023C08 0x4C5D6E7F; mww 0x40023C14 0x0fffaaed" -c "exit"
-
-#program with olimex arm-usb-tiny-h and jtag-swd adapter board. needs openocd>=0.9
-upload-olimex: build/$(PROJECT).bin
-	openocd -f interface/ftdi/olimex-arm-usb-tiny-h.cfg -f interface/ftdi/olimex-arm-jtag-swd.cfg -c "set WORKAREASIZE 0x2000" -f target/stm32f4x.cfg -c "program build/$(PROJECT).elf verify reset"
-
-upload-pi: build/$(PROJECT).bin
-	openocd -f pi_stm32.cfg -c "reset_config trst_only combined" -c "program build/$(PROJECT).elf verify reset exit"
-
-upload-pi-remote: build/$(PROJECT).elf
-	./upload_remote_pi build/$(PROJECT).elf ted 10.42.0.199 22
-
-debug-start:
-	openocd -f stm32-bv_openocd.cfg
 
 #
 # Custom rules
