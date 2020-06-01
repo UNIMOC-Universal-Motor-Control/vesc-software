@@ -54,9 +54,9 @@
 #define STM32_PLLI2SP_VALUE                 4
 #define STM32_PLLI2SQ_VALUE                 4
 #define STM32_PLLSAIN_VALUE                 192
-#define STM32_PLLSAIM_VALUE                 4
-#define STM32_PLLSAIP_VALUE                 8
-#define STM32_PLLSAIQ_VALUE                 4
+#define STM32_PLLSAIM_VALUE                 20
+#define STM32_PLLSAIP_VALUE                 4
+#define STM32_PLLSAIQ_VALUE                 2
 #define STM32_HPRE                          STM32_HPRE_DIV1
 #define STM32_PPRE1                         STM32_PPRE1_DIV4
 #define STM32_PPRE2                         STM32_PPRE2_DIV2
@@ -69,7 +69,7 @@
 #define STM32_I2SSRC                        STM32_I2SSRC_PLLI2S
 #define STM32_SAI1SEL                       STM32_SAI2SEL_PLLR
 #define STM32_SAI2SEL                       STM32_SAI2SEL_PLLR
-#define STM32_CK48MSEL                      STM32_CK48MSEL_PLLALT
+#define STM32_CK48MSEL                      STM32_CK48MSEL_PLLSAI
 #define STM32_PVD_ENABLE                    FALSE
 #define STM32_PLS                           STM32_PLS_LEV0
 #define STM32_BKPRAM_ENABLE                 FALSE
@@ -204,7 +204,7 @@
 #define STM32_ICU_USE_TIM4                  FALSE
 #define STM32_ICU_USE_TIM5                  FALSE
 #define STM32_ICU_USE_TIM8                  FALSE
-#define STM32_ICU_USE_TIM9                  TRUE
+#define STM32_ICU_USE_TIM9                  FALSE
 #define STM32_ICU_TIM1_IRQ_PRIORITY         7
 #define STM32_ICU_TIM2_IRQ_PRIORITY         7
 #define STM32_ICU_TIM3_IRQ_PRIORITY         7
