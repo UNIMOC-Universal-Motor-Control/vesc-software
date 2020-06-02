@@ -5,9 +5,8 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 -std=gnu99 -D_GNU_SOURCE
-  USE_OPT += -DBOARD_OTG_NOVBUSSENS $(build_args)
-  USE_OPT += -fsingle-precision-constant -Wdouble-promotion -specs=nosys.specs
+  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 
+  USE_OPT += -fsingle-precision-constant -Wdouble-promotion -specs=nosys.specs -std=gnu99 -D_GNU_SOURCE
 endif
 
 # C specific options here (added to USE_OPT).
@@ -129,48 +128,46 @@ LDSCRIPT= ld_eeprom_emu.ld
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
 CSRC = $(ALLCSRC) \
-       $(TESTSRC) \
        board.c \
-       $(BASEDIR)/main.c \
-       $(BASEDIR)/comm_usb_serial.c \
-       $(BASEDIR)/irq_handlers.c \
-       $(BASEDIR)/buffer.c \
-       $(BASEDIR)/comm_usb.c \
-       $(BASEDIR)/crc.c \
-       $(BASEDIR)/digital_filter.c \
-       $(BASEDIR)/ledpwm.c \
-       $(BASEDIR)/mcpwm.c \
-       $(BASEDIR)/servo_dec.c \
-       $(BASEDIR)/utils.c \
-       $(BASEDIR)/servo_simple.c \
-       $(BASEDIR)/packet.c \
-       $(BASEDIR)/terminal.c \
-       $(BASEDIR)/conf_general.c \
-       $(BASEDIR)/eeprom.c \
-       $(BASEDIR)/commands.c \
-       $(BASEDIR)/timeout.c \
-       $(BASEDIR)/comm_can.c \
-       $(BASEDIR)/ws2811.c \
-       $(BASEDIR)/led_external.c \
-       $(BASEDIR)/encoder.c \
-       $(BASEDIR)/flash_helper.c \
-       $(BASEDIR)/mc_interface.c \
-       $(BASEDIR)/mcpwm_foc.c \
-       $(BASEDIR)/gpdrive.c \
-       $(BASEDIR)/confgenerator.c \
-       $(BASEDIR)/timer.c \
-       $(BASEDIR)/i2c_bb.c \
-       $(BASEDIR)/virtual_motor.c \
-       $(BASEDIR)/shutdown.c \
-       $(BASEDIR)/mempools.c \
-       $(BASEDIR)/worker.c \
-       $(HWSRC) \
-       $(APPSRC) \
-       $(NRFSRC) \
-       $(CANARDSRC) \
-       $(IMUSRC) \
-       $(COMPRESSIONSRC) \
-       $(BLACKMAGICSRC)
+#       $(BASEDIR)/main.c \
+#       $(BASEDIR)/comm_usb_serial.c \
+#       $(BASEDIR)/irq_handlers.c \
+#       $(BASEDIR)/buffer.c \
+#       $(BASEDIR)/comm_usb.c \
+#       $(BASEDIR)/crc.c \
+#       $(BASEDIR)/digital_filter.c \
+#       $(BASEDIR)/ledpwm.c \
+#       $(BASEDIR)/mcpwm.c \
+#       $(BASEDIR)/servo_dec.c \
+#       $(BASEDIR)/utils.c \
+#       $(BASEDIR)/servo_simple.c \
+#       $(BASEDIR)/packet.c \
+#       $(BASEDIR)/terminal.c \
+#       $(BASEDIR)/conf_general.c \
+#       $(BASEDIR)/eeprom.c \
+#       $(BASEDIR)/commands.c \
+#       $(BASEDIR)/timeout.c \
+#       $(BASEDIR)/comm_can.c \
+#       $(BASEDIR)/ws2811.c \
+#       $(BASEDIR)/led_external.c \
+#       $(BASEDIR)/encoder.c \
+#       $(BASEDIR)/flash_helper.c \
+#       $(BASEDIR)/mc_interface.c \
+#       $(BASEDIR)/mcpwm_foc.c \
+#       $(BASEDIR)/gpdrive.c \
+#       $(BASEDIR)/confgenerator.c \
+#       $(BASEDIR)/timer.c \
+#       $(BASEDIR)/i2c_bb.c \
+#       $(BASEDIR)/virtual_motor.c \
+#       $(BASEDIR)/shutdown.c \
+#       $(BASEDIR)/mempools.c \
+#       $(BASEDIR)/worker.c \
+#       $(APPSRC) \
+#       $(NRFSRC) \
+#       $(CANARDSRC) \
+#       $(IMUSRC) \
+#       $(COMPRESSIONSRC) \
+#       $(BLACKMAGICSRC)
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -184,15 +181,14 @@ ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
 INCDIR = $(CONFDIR) $(ALLINC) \
-         $(BASEDIR)/mcconf \
-         $(BASEDIR)/appconf \
-         $(HWINC) \
-         $(APPINC) \
-         $(NRFINC) \
-         $(CANARDINC) \
-         $(IMUINC) \
-         $(COMPRESSIONINC) \
-         $(BLACKMAGICINC)
+#         $(BASEDIR)/mcconf \
+#         $(BASEDIR)/appconf \
+#         $(APPINC) \
+#         $(NRFINC) \
+#         $(CANARDINC) \
+#         $(IMUINC) \
+#         $(COMPRESSIONINC) \
+#         $(BLACKMAGICINC)
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
