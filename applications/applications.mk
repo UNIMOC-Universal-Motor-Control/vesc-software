@@ -1,10 +1,10 @@
-APPSRC =	applications/app.c \
-			applications/app_ppm.c \
-			applications/app_adc.c \
-			applications/app_sten.c \
-			applications/app_uartcomm.c \
-			applications/app_nunchuk.c \
-			applications/app_balance.c \
-			applications/app_custom.c
+ALLCSCR += $(BASEDIR)/applications/app.c
+ALLCSCR += $(BASEDIR)/applications/app_ppm.c
+ALLCSCR += $(BASEDIR)/applications/app_adc.c
+ALLCSCR += $(BASEDIR)/applications/app_sten.c
+ALLCSCR += $(BASEDIR)/applications/app_uartcomm.c
+ALLCSCR += $(BASEDIR)/applications/app_nunchuk.c
+ALLCSCR += $(BASEDIR)/applications/app_balance.c
+ALLCSCR += $(BASEDIR)/applications/app_custom.c
 
-APPINC = applications
+ALLINC += $(BASEDIR)/applications

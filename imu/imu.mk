@@ -1,9 +1,9 @@
-IMUSRC = 	imu/mpu9150.c \
-			imu/icm20948.c \
-			imu/ahrs.c \
-			imu/imu.c \
-			imu/BMI160_driver/bmi160.c \
-			imu/bmi160_wrapper.c
+ALLCSRC += $(BASEDIR)/imu/mpu9150.c
+ALLCSRC += $(BASEDIR)/imu/icm20948.c
+ALLCSRC += $(BASEDIR)/imu/ahrs.c
+ALLCSRC += $(BASEDIR)/imu/imu.c
+ALLCSRC += $(BASEDIR)/imu/BMI160_driver/bmi160.c
+ALLCSRC += $(BASEDIR)/imu/bmi160_wrapper.c
 
-IMUINC = 	imu \
-			imu/BMI160_driver
+ALLINC += $(BASEDIR)/imu
+ALLINC += $(BASEDIR)/imu/BMI160_driver

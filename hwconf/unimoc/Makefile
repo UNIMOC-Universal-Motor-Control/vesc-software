@@ -5,8 +5,9 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 
-  USE_OPT += -fsingle-precision-constant -Wdouble-promotion -specs=nosys.specs -std=gnu99 -D_GNU_SOURCE
+  USE_OPT = -Og -ggdb -fomit-frame-pointer -falign-functions=16 -D_GNU_SOURCE
+  USE_OPT += -fsingle-precision-constant -Wdouble-promotion -specs=nosys.specs -std=gnu99
+  USE_OPT += -DUSE_STDPERIPH_DRIVER
 endif
 
 # C specific options here (added to USE_OPT).
@@ -16,7 +17,7 @@ endif
 
 # C++ specific options here (added to USE_OPT).
 ifeq ($(USE_CPPOPT),)
-  USE_CPPOPT = -fno-rtti
+  USE_CPPOPT = -fno-rtti -fno-exceptions
 endif
 
 # Enable this if you want the linker to remove unused code and data.
@@ -42,7 +43,7 @@ endif
 # If enabled, this option makes the build process faster by not compiling
 # modules not used in the current configuration.
 ifeq ($(USE_SMART_BUILD),)
-  USE_SMART_BUILD = yes
+  USE_SMART_BUILD = no
 endif
 
 #
@@ -75,11 +76,6 @@ ifeq ($(USE_FPU_OPT),)
   USE_FPU_OPT = -mfloat-abi=$(USE_FPU) -mfpu=fpv4-sp-d16
 endif
 
-# Enable this if you really want to use the STM FWLib.
-ifeq ($(USE_FWLIB),)
-  USE_FWLIB = yes
-endif
-
 #
 # Architecture or project specific options
 ##############################################################################
@@ -95,7 +91,7 @@ PROJECT = vesc
 MCU  = cortex-m4
 
 # Imported source files and paths.
-BASEDIR  := ../..
+BASEDIR  := ./../..
 CHIBIOS  := $(BASEDIR)/chibios
 CONFDIR  := ./cfg
 BUILDDIR := ./build
@@ -115,59 +111,22 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Auto-build files in ./source recursively.
 include $(CHIBIOS)/tools/mk/autobuild.mk
 # Other files (optional).
+include $(BASEDIR)/vesc.mk
 include $(BASEDIR)/applications/applications.mk
 include $(BASEDIR)/nrf/nrf.mk
 include $(BASEDIR)/libcanard/canard.mk
 include $(BASEDIR)/imu/imu.mk
 include $(BASEDIR)/compression/compression.mk
 include $(BASEDIR)/blackmagic/blackmagic.mk
+include $(CHIBIOS)/ext/stdperiph_stm32f4/stm32lib.mk
 
 # Define linker script file here
 LDSCRIPT= ld_eeprom_emu.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CSRC = $(ALLCSRC) \
-       board.c \
-#       $(BASEDIR)/main.c \
-#       $(BASEDIR)/comm_usb_serial.c \
-#       $(BASEDIR)/irq_handlers.c \
-#       $(BASEDIR)/buffer.c \
-#       $(BASEDIR)/comm_usb.c \
-#       $(BASEDIR)/crc.c \
-#       $(BASEDIR)/digital_filter.c \
-#       $(BASEDIR)/ledpwm.c \
-#       $(BASEDIR)/mcpwm.c \
-#       $(BASEDIR)/servo_dec.c \
-#       $(BASEDIR)/utils.c \
-#       $(BASEDIR)/servo_simple.c \
-#       $(BASEDIR)/packet.c \
-#       $(BASEDIR)/terminal.c \
-#       $(BASEDIR)/conf_general.c \
-#       $(BASEDIR)/eeprom.c \
-#       $(BASEDIR)/commands.c \
-#       $(BASEDIR)/timeout.c \
-#       $(BASEDIR)/comm_can.c \
-#       $(BASEDIR)/ws2811.c \
-#       $(BASEDIR)/led_external.c \
-#       $(BASEDIR)/encoder.c \
-#       $(BASEDIR)/flash_helper.c \
-#       $(BASEDIR)/mc_interface.c \
-#       $(BASEDIR)/mcpwm_foc.c \
-#       $(BASEDIR)/gpdrive.c \
-#       $(BASEDIR)/confgenerator.c \
-#       $(BASEDIR)/timer.c \
-#       $(BASEDIR)/i2c_bb.c \
-#       $(BASEDIR)/virtual_motor.c \
-#       $(BASEDIR)/shutdown.c \
-#       $(BASEDIR)/mempools.c \
-#       $(BASEDIR)/worker.c \
-#       $(APPSRC) \
-#       $(NRFSRC) \
-#       $(CANARDSRC) \
-#       $(IMUSRC) \
-#       $(COMPRESSIONSRC) \
-#       $(BLACKMAGICSRC)
+CSRC = $(ALLCSRC) board.c
+
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -180,15 +139,7 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC) \
-#         $(BASEDIR)/mcconf \
-#         $(BASEDIR)/appconf \
-#         $(APPINC) \
-#         $(NRFINC) \
-#         $(CANARDINC) \
-#         $(IMUINC) \
-#         $(COMPRESSIONINC) \
-#         $(BLACKMAGICINC)
+INCDIR = $(CONFDIR) $(ALLINC)
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
@@ -238,14 +189,6 @@ include $(RULESPATH)/rules.mk
 ##############################################################################
 # Custom rules
 #
-
-ifeq ($(USE_FWLIB),yes)
-  include $(CHIBIOS)/ext/stdperiph_stm32f4/stm32lib.mk
-  CSRC += $(STM32SRC)
-  INCDIR += $(STM32INC)
-  USE_OPT += -DUSE_STDPERIPH_DRIVER
-endif
-
 build/$(PROJECT).bin: build/$(PROJECT).elf 
 	$(BIN) build/$(PROJECT).elf build/$(PROJECT).bin --gap-fill 0xFF
 

@@ -203,6 +203,16 @@
 #define BRK_GPIO				GPIOB
 #define BRK_PIN					12
 
+
+// NRF pins
+#define NRF_PORT_CSN			GPIOB
+#define NRF_PIN_CSN				12
+#define NRF_PORT_SCK			GPIOB
+#define NRF_PIN_SCK				4
+#define NRF_PORT_MOSI			GPIOB
+#define NRF_PIN_MOSI			3
+#define NRF_PORT_MISO			GPIOD
+#define NRF_PIN_MISO			2
 // SPI pins
 #define HW_SPI_DEV				SPID1
 #define HW_SPI_GPIO_AF			GPIO_AF_SPI1

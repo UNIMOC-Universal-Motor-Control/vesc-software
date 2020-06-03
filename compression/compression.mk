@@ -1,3 +1,3 @@
-COMPRESSIONSRC = 	compression/minilzo.c
+ALLCSCR += $(BASEDIR)/compression/minilzo.c
 
-COMPRESSIONINC = 	compression
+ALLINC += $(BASEDIR)/compression

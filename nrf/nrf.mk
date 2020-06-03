@@ -1,6 +1,6 @@
-NRFSRC =	nrf/spi_sw.c \
-			nrf/rf.c \
-			nrf/rfhelp.c \
-			nrf/nrf_driver.c
+ALLCSRC += $(BASEDIR)/nrf/spi_sw.c
+ALLCSRC += $(BASEDIR)/nrf/rf.c
+ALLCSRC += $(BASEDIR)/nrf/rfhelp.c
+ALLCSRC += $(BASEDIR)/nrf/nrf_driver.c
 
-NRFINC = nrf
+ALLINC += $(BASEDIR)/nrf

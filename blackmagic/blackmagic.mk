@@ -1,19 +1,19 @@
-BLACKMAGICSRC =	blackmagic/bm_if.c \
-				blackmagic/swdptap.c \
-				blackmagic/timing.c \
-				blackmagic/platform.c \
-				blackmagic/exception.c \
-				blackmagic/target/swdptap_generic.c \
-				blackmagic/target/target.c \
-				blackmagic/target/adiv5_swdp.c \
-				blackmagic/target/adiv5.c \
-				blackmagic/target/cortexm.c \
-				blackmagic/target/nrf51.c \
-				blackmagic/target/stm32f1.c \
-				blackmagic/target/stm32f4.c \
-				blackmagic/target/stm32h7.c \
-				blackmagic/target/stm32l0.c \
-				blackmagic/target/stm32l4.c \
+ALLCSCR += $(BASEDIR)/blackmagic/bm_if.c
+ALLCSCR += $(BASEDIR)/blackmagic/swdptap.c
+ALLCSCR += $(BASEDIR)/blackmagic/timing.c
+ALLCSCR += $(BASEDIR)/blackmagic/platform.c
+ALLCSCR += $(BASEDIR)/blackmagic/exception.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/swdptap_generic.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/target.c 
+ALLCSCR += $(BASEDIR)/blackmagic/target/adiv5_swdp.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/adiv5.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/cortexm.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/nrf51.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/stm32f1.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/stm32f4.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/stm32h7.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/stm32l0.c
+ALLCSCR += $(BASEDIR)/blackmagic/target/stm32l4.c
 
-BLACKMAGICINC =	blackmagic \
-				blackmagic/target \
+ALLINC += $(BASEDIR)/blackmagic
+ALLINC += $(BASEDIR)/blackmagic/target
