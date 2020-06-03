@@ -111,7 +111,7 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Auto-build files in ./source recursively.
 include $(CHIBIOS)/tools/mk/autobuild.mk
 # Other files (optional).
-include $(BASEDIR)/vesc.mk
+include $(BASEDIR)/src/src.mk
 include $(BASEDIR)/applications/applications.mk
 include $(BASEDIR)/nrf/nrf.mk
 include $(BASEDIR)/libcanard/canard.mk
