@@ -3,6 +3,7 @@
 
 #define USE_RTOS	0
 
+#include "board.h"
 #include "misc.h"
 #include "stm32f4_gpio_af.h"
 #include "stm32f4xx_dma.h"

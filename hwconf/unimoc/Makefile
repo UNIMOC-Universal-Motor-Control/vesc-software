@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -Og -ggdb -fomit-frame-pointer -falign-functions=16 -D_GNU_SOURCE
+  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 -D_GNU_SOURCE
   USE_OPT += -fsingle-precision-constant -Wdouble-promotion -specs=nosys.specs -std=gnu99
   USE_OPT += -DUSE_STDPERIPH_DRIVER
 endif
@@ -43,7 +43,7 @@ endif
 # If enabled, this option makes the build process faster by not compiling
 # modules not used in the current configuration.
 ifeq ($(USE_SMART_BUILD),)
-  USE_SMART_BUILD = no
+  USE_SMART_BUILD = yes
 endif
 
 #
@@ -139,7 +139,7 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC)
+INCDIR = $(CONFDIR) $(ALLINC) .
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes

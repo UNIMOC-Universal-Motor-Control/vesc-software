@@ -1564,7 +1564,7 @@ FLASH_Status FLASH_GetStatus(void)
       {
         if((FLASH->SR & (uint32_t)0xE0) != (uint32_t)0x00)
         {
-          flashstatus = FLASH_ERROR_PROGRAM; 
+          flashstatus = FLASH_ERROR_PROGRAM_;
         }
         else
         {
