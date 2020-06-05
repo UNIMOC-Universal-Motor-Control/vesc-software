@@ -23,7 +23,7 @@
 #include "conf_general.h"
 #include "stm32f4xx_conf.h"
 
-#include HW_HEADER
+#include "hw_custom.h"
 
 #ifndef HW_NAME
 #error "No hardware name set"

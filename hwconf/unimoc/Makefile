@@ -125,7 +125,7 @@ LDSCRIPT= ld_eeprom_emu.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CSRC = $(ALLCSRC) board.c
+CSRC = $(ALLCSRC) board.c ../common/hw.c
 
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
@@ -139,7 +139,7 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC) .
+INCDIR = $(CONFDIR) $(ALLINC) . ../common
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes

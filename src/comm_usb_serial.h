@@ -1,6 +1,8 @@
 #ifndef COMM_USB_SERIAL_H_
 #define COMM_USB_SERIAL_H_
 
+#include "hal.h"
+
 // Variables
 extern SerialUSBDriver SDU1;
 

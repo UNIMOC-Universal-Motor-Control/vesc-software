@@ -18,8 +18,7 @@
     */
 
 #include "crc.h"
-
-#include "stm32f4xx.h"
+#include "hal.h"
 
 // CRC Table
 const unsigned short crc16_tab[] = { 0x0000, 0x1021, 0x2042, 0x3063, 0x4084,

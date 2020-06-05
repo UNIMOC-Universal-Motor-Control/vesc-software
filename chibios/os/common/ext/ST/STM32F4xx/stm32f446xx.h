@@ -15950,7 +15950,7 @@ typedef struct
 #define FSMC_IRQn              FMC_IRQn
 
 /* Aliases for __IRQHandler */
-#define FSMC_IRQHandler        FMC_IRQHandler
+//#define FSMC_IRQHandler        FMC_IRQHandler
 #define QuadSPI_IRQHandler     QUADSPI_IRQHandler
 
 /**

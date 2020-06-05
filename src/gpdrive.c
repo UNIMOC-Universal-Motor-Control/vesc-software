@@ -281,10 +281,10 @@ void gpdrive_deinit(void) {
 	// Restore pins
 	palSetPadMode(GPIOA, 9, PAL_MODE_ALTERNATE(GPIO_AF_TIM1) |
 			PAL_STM32_OSPEED_HIGHEST |
-			PAL_STM32_PUDR_FLOATING);
+			PAL_STM32_PUPDR_FLOATING);
 	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(GPIO_AF_TIM1) |
 			PAL_STM32_OSPEED_HIGHEST |
-			PAL_STM32_PUDR_FLOATING);
+			PAL_STM32_PUPDR_FLOATING);
 }
 
 bool gpdrive_init_done(void) {

@@ -20,6 +20,7 @@
 #include "conf_general.h"
 
 #include "ch.h"
+#include "hal.h"
 #include "app.h"
 #include <string.h>
 #include <math.h>
@@ -762,7 +763,9 @@ uint8_t conf_general_calculate_deadtime(float deadtime_ns, float core_clock_freq
 					// Deadtime requested is longer than max achievable. Set deadtime at
 					// longest possible value
 					DTG = 0xFF;
-					assert_param(1); //catch this
+					osalSysHalt("Deadtime requested is "
+							"longer than max achievable. "
+							"Set deadtime at longest possible value"); //catch this
 				}
 			}
 		}

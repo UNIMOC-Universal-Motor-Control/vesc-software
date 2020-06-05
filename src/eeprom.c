@@ -342,7 +342,7 @@ uint16_t EE_WriteVariable(uint16_t VirtAddress, uint16_t Data)
 	/* Return error if MCU VDD is below 2.9V */
 	if (PWR->CSR & PWR_CSR_PVDO)
 	{
-		Status = FLASH_ERROR_PROGRAM;
+		Status = FLASH_ERROR_PROGRAM_;
 	}
 	else
 	{
