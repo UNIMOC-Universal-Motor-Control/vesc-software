@@ -364,7 +364,7 @@ static THD_FUNCTION(mpu_thread, arg) {
 			iteration_timer = chVTGetSystemTime();
 		}
 
-		iteration_timer += US2ST(1000000 / rate_hz);
+		iteration_timer += TIME_US2I(1000000 / rate_hz);
 		systime_t time_start = chVTGetSystemTime();
 		if (iteration_timer > time_start) {
 			chThdSleep(iteration_timer - time_start);

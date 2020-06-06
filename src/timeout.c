@@ -173,7 +173,7 @@ static THD_FUNCTION(timeout_thread, arg) {
 	chRegSetThreadName("Timeout");
 
 	for(;;) {
-		if (timeout_msec != 0 && chVTTimeElapsedSinceX(last_update_time) > MS2ST(timeout_msec)) {
+		if (timeout_msec != 0 && chVTTimeElapsedSinceX(last_update_time) > OSAL_MS2I(timeout_msec)) {
 			mc_interface_unlock();
 			mc_interface_select_motor_thread(1);
 			mc_interface_set_brake_current(timeout_brake_current);

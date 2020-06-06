@@ -28,7 +28,7 @@
 
 void timer_init(void) {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
-	uint16_t PrescalerValue = (uint16_t) ((SYSTEM_CORE_CLOCK / 2) / TIMER_HZ) - 1;
+	uint16_t PrescalerValue = (uint16_t) (STM32_TIMCLK1 / TIMER_HZ) - 1;
 
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_TimeBaseStructure.TIM_Period = 0xFFFFFFFF;

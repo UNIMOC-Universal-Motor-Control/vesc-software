@@ -252,7 +252,7 @@ THD_FUNCTION(temp_thread, arg) {
 	uint8_t rxbuf[10];
 	uint8_t txbuf[10];
 	msg_t status = MSG_OK;
-	systime_t tmo = MS2ST(5);
+	systime_t tmo = OSAL_MS2ST(5);
 	i2caddr_t temp_addr = 0x48;
 
 	hw_start_i2c();

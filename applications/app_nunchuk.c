@@ -111,7 +111,7 @@ static THD_FUNCTION(chuk_thread, arg) {
 	uint8_t rxbuf[10];
 	uint8_t txbuf[10];
 	msg_t status = MSG_OK;
-	systime_t tmo = MS2ST(5);
+	systime_t tmo = OSAL_MS2ST(5);
 	i2caddr_t chuck_addr = 0x52;
 	chuck_data chuck_d_tmp;
 
@@ -222,7 +222,7 @@ static THD_FUNCTION(output_thread, arg) {
 
 		// Local timeout to prevent this thread from causing problems after not
 		// being used for a while.
-		if (chVTTimeElapsedSinceX(last_update_time) > MS2ST(LOCAL_TIMEOUT)) {
+		if (chVTTimeElapsedSinceX(last_update_time) > OSAL_MS2ST(LOCAL_TIMEOUT)) {
 			was_pid = false;
 			continue;
 		}

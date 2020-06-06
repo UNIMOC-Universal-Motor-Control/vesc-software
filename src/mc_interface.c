@@ -2096,19 +2096,19 @@ static void run_timer_tasks(volatile motor_if_state_t *motor) {
 		break;
 
 	case OUT_AUX_MODE_ON_AFTER_2S:
-		if (chVTGetSystemTimeX() >= MS2ST(2000)) {
+		if (chVTGetSystemTimeX() >= OSAL_MS2I(2000)) {
 			AUX_ON();
 		}
 		break;
 
 	case OUT_AUX_MODE_ON_AFTER_5S:
-		if (chVTGetSystemTimeX() >= MS2ST(5000)) {
+		if (chVTGetSystemTimeX() >= OSAL_MS2I(5000)) {
 			AUX_ON();
 		}
 		break;
 
 	case OUT_AUX_MODE_ON_AFTER_10S:
-		if (chVTGetSystemTimeX() >= MS2ST(10000)) {
+		if (chVTGetSystemTimeX() >= OSAL_MS2I(10000)) {
 			AUX_ON();
 		}
 		break;

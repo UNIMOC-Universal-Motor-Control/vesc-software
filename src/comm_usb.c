@@ -107,7 +107,7 @@ static void send_packet_raw(unsigned char *buffer, unsigned int len) {
 		if (was_timeout) {
 			written = SDU1.vmt->writet(&SDU1, buffer, len, TIME_IMMEDIATE);
 		} else {
-			written = SDU1.vmt->writet(&SDU1, buffer, len, MS2ST(100));
+			written = SDU1.vmt->writet(&SDU1, buffer, len, OSAL_MS2I(100));
 		}
 
 		was_timeout = written != len;

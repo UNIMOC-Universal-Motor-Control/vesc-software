@@ -152,7 +152,7 @@ static THD_FUNCTION(uart_thread, arg) {
 	is_running = true;
 
 	for(;;) {
-		time += MS2ST(1);
+		time += OSAL_MS2ST(1);
 
 		if (stop_now) {
 			is_running = false;
