@@ -53,7 +53,7 @@ static THD_FUNCTION(serial_read_thread, arg) {
 	int had_data = 0;
 
 	for(;;) {
-		int len = chSequentialStreamRead(&SDU1, (uint8_t*) buffer, 1);
+		int len = streamRead(&SDU1, (uint8_t*) buffer, 1);
 
 		for (int i = 0;i < len;i++) {
 			serial_rx_buffer[serial_rx_write_pos++] = buffer[i];
