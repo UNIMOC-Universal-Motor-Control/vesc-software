@@ -161,7 +161,7 @@ void app_disable_output(int time_ms) {
 		chVTReset(&output_vt);
 	} else {
 		output_disabled_now = true;
-		chVTSet(&output_vt, OSAL_MS2ST(time_ms), output_vt_cb, 0);
+		chVTSet(&output_vt, OSAL_MS2I(time_ms), output_vt_cb, 0);
 	}
 }
 

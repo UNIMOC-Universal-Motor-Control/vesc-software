@@ -121,7 +121,7 @@ include $(BASEDIR)/blackmagic/blackmagic.mk
 include $(CHIBIOS)/ext/stdperiph_stm32f4/stm32lib.mk
 
 # Define linker script file here
-LDSCRIPT= ld_eeprom_emu.ld
+LDSCRIPT= $(STARTUPLD)/STM32F446xE.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

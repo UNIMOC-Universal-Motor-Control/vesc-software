@@ -19,7 +19,7 @@
 
 #include "conf_general.h"
 #include "utils.h"
-#include HW_SOURCE
+//#include HW_SOURCE
 
 uint8_t hw_id_from_uuid(void) {
 	return utils_crc32c(STM32_UUID_8, 12) & 0x7F;

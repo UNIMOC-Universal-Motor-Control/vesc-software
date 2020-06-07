@@ -98,7 +98,8 @@ static ICUConfig icucfg = {
 		icuperiodcb,
 		NULL,
 		HW_ICU_CHANNEL,
-		0
+		0,
+		0xFFFFFFFFU
 };
 
 /**
