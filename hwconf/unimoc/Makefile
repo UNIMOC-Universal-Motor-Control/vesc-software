@@ -125,7 +125,7 @@ LDSCRIPT= $(STARTUPLD)/STM32F446xE.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CSRC = $(ALLCSRC) board.c ../common/hw.c
+CSRC = $(ALLCSRC) board.c ../common/hw.c hw_custom.c
 
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
