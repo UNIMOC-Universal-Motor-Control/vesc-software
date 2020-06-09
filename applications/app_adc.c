@@ -300,7 +300,7 @@ static THD_FUNCTION(adc_thread, arg) {
 //		}
 
 		if (ramp_time > 0.01) {
-			const float ramp_step = (float)ST2MS(chVTTimeElapsedSinceX(last_time)) / (ramp_time * 1000.0);
+			const float ramp_step = (float)TIME_I2MS(chVTTimeElapsedSinceX(last_time)) / (ramp_time * 1000.0);
 			utils_step_towards(&pwr_ramp, pwr, ramp_step);
 			last_time = chVTGetSystemTimeX();
 			pwr = pwr_ramp;

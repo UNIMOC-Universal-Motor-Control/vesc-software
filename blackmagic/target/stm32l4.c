@@ -65,34 +65,40 @@ static int stm32l4_flash_write(struct target_flash *f,
 #define FLASH_OPTR			(FPEC_BASE+0x20)
 //#define FLASH_OPTCR		(FPEC_BASE+0x14)
 
-#define FLASH_CR_PG			(1 << 0)
+//#define FLASH_CR_PG			(1 << 0)
 #define FLASH_CR_PER		(1 << 1)
+#if !defined(FLASH_CR_MER1)
 #define FLASH_CR_MER1		(1 << 2)
+#endif
 #define FLASH_CR_PAGE_SHIFT	3
 #define FLASH_CR_BKER		(1 << 11)
+#if !defined(FLASH_CR_MER2)
 #define FLASH_CR_MER2		(1 << 15)
-#define FLASH_CR_STRT		(1 << 16)
+#endif
+//#define FLASH_CR_STRT		(1 << 16)
 #define FLASH_CR_OPTSTRT	(1 << 17)
 #define FLASH_CR_FSTPG	 	(1 << 18)
-#define FLASH_CR_EOPIE		(1 << 24)
+//#define FLASH_CR_EOPIE		(1 << 24)
 #define FLASH_CR_ERRIE		(1 << 25)
 #define FLASH_CR_OBL_LAUNCH	(1 << 27)
 #define FLASH_CR_OPTLOCK	(1 << 30)
-#define FLASH_CR_LOCK		(1 << 31)
+//#define FLASH_CR_LOCK		(1 << 31)
 
-#define FLASH_SR_EOP		(1 << 0)
+//#define FLASH_SR_EOP		(1 << 0)
 #define FLASH_SR_OPERR		(1 << 1)
 #define FLASH_SR_PROGERR	(1 << 3)
-#define FLASH_SR_WRPERR		(1 << 4)
-#define FLASH_SR_PGAERR		(1 << 5)
+//#define FLASH_SR_WRPERR		(1 << 4)
+//#define FLASH_SR_PGAERR		(1 << 5)
 #define FLASH_SR_SIZERR		(1 << 6)
-#define FLASH_SR_PGSERR		(1 << 7)
+//#define FLASH_SR_PGSERR		(1 << 7)
 #define FLASH_SR_MSERR		(1 << 8)
 #define FLASH_SR_FASTERR	(1 << 9)
+#if !defined(FLASH_SR_RDERR)
 #define FLASH_SR_RDERR		(1 << 14)
+#endif
 #define FLASH_SR_OPTVERR	(1 << 15)
 #define FLASH_SR_ERROR_MASK	0xC3FA
-#define FLASH_SR_BSY		(1 << 16)
+//#define FLASH_SR_BSY		(1 << 16)
 
 #define KEY1 0x45670123
 #define KEY2 0xCDEF89AB
@@ -109,9 +115,9 @@ static int stm32l4_flash_write(struct target_flash *f,
 #define OR_DBANK 		(1 << 22)
 
 #define DBGMCU_CR(dbgmcureg)	(dbgmcureg + 0x04)
-#define DBGMCU_CR_DBG_SLEEP		(0x1U << 0U)
-#define DBGMCU_CR_DBG_STOP		(0x1U << 1U)
-#define DBGMCU_CR_DBG_STANDBY	(0x1U << 2U)
+//#define DBGMCU_CR_DBG_SLEEP		(0x1U << 0U)
+//#define DBGMCU_CR_DBG_STOP		(0x1U << 1U)
+//#define DBGMCU_CR_DBG_STANDBY	(0x1U << 2U)
 
 enum {
         STM32G0_DBGMCU_IDCODE_PHYS = 0x40015800,

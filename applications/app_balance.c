@@ -25,8 +25,8 @@
 #include "hw.h" // Pin mapping on this hardware
 #include "timeout.h" // To reset the timeout
 #include "commands.h"
-#include "imu/imu.h"
-#include "imu/ahrs.h"
+#include "imu.h"
+#include "ahrs.h"
 #include "utils.h"
 #include "datatypes.h"
 #include "comm_can.h"
@@ -147,7 +147,7 @@ float app_balance_get_roll_angle(void) {
 	return roll_angle;
 }
 uint32_t app_balance_get_diff_time(void) {
-	return ST2US(diff_time);
+	return TIME_I2US(diff_time);
 }
 float app_balance_get_motor_current(void) {
 	return motor_current;
@@ -323,7 +323,7 @@ static THD_FUNCTION(balance_thread, arg) {
 			case (RUNNING):
 				// Check for overspeed
 				if(abs_duty_cycle > balance_conf.overspeed_duty){
-					if(ST2MS(current_time - dead_start_time) > balance_conf.overspeed_delay){
+					if(TIME_I2MS(current_time - dead_start_time) > balance_conf.overspeed_delay){
 						state = DEAD;
 					}
 				} else {
@@ -337,7 +337,7 @@ static THD_FUNCTION(balance_thread, arg) {
 					switch_state == OFF || // Switch fully open
 					(switch_state == HALF && abs_erpm < balance_conf.adc_half_fault_erpm) // Switch partially open and stopped
 						){
-					if(ST2MS(current_time - fault_start_time) > balance_conf.fault_delay){
+					if(TIME_I2MS(current_time - fault_start_time) > balance_conf.fault_delay){
 						state = FAULT;
 					}
 				} else {

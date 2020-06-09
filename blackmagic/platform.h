@@ -53,24 +53,24 @@ extern int platform_swclk_pin;
 #define SWDIO_MODE_DRIVE()				palSetPadMode(SWDIO_PORT, SWDIO_PIN, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST)
 
 // Avoid collisions with chibios definitions
-#undef SRAM_BASE
-#undef FLASH_CR_PG
-#undef FLASH_CR_SER
-#undef FLASH_CR_MER
-#undef FLASH_CR_STRT
-#undef FLASH_CR_EOPIE
-#undef FLASH_CR_LOCK
-#undef FLASH_SR_BSY
-#undef FLASH_OPTCR_OPTLOCK
-#undef FLASH_OPTCR_OPTSTRT
-#undef FLASH_SR_EOP
-#undef FLASH_SR_WRPERR
-#undef FLASH_SR_PGSERR
-#undef FLASH_CR_SNB_1
-#undef FLASH_CR_SNB
-#undef DBGMCU_CR_DBG_SLEEP
-#undef DBGMCU_CR_DBG_STOP
-#undef DBGMCU_CR_DBG_STANDBY
-#undef FLASH_SR_PGAERR
+//#undef SRAM_BASE
+//#undef FLASH_CR_PG
+//#undef FLASH_CR_SER
+//#undef FLASH_CR_MER
+//#undef FLASH_CR_STRT
+//#undef FLASH_CR_EOPIE
+//#undef FLASH_CR_LOCK
+//#undef FLASH_SR_BSY
+//#undef FLASH_OPTCR_OPTLOCK
+//#undef FLASH_OPTCR_OPTSTRT
+//#undef FLASH_SR_EOP
+//#undef FLASH_SR_WRPERR
+//#undef FLASH_SR_PGSERR
+//#undef FLASH_CR_SNB_1
+//#undef FLASH_CR_SNB
+//#undef DBGMCU_CR_DBG_SLEEP
+//#undef DBGMCU_CR_DBG_STOP
+//#undef DBGMCU_CR_DBG_STANDBY
+//#undef FLASH_SR_PGAERR
 
 #endif /* BLACKMAGIC_PLATFORM_H_ */

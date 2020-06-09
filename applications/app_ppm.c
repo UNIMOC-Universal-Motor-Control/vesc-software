@@ -187,7 +187,7 @@ static THD_FUNCTION(ppm_thread, arg) {
 //			ramp_time = fminf(config.ramp_time_pos, config.ramp_time_neg);
 //		}
 
-		const float dt = (float)ST2MS(chVTTimeElapsedSinceX(last_time)) / 1000.0;
+		const float dt = (float)TIME_I2MS(chVTTimeElapsedSinceX(last_time)) / 1000.0;
 		last_time = chVTGetSystemTimeX();
 
 		if (ramp_time > 0.01) {

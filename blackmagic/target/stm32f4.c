@@ -65,26 +65,30 @@ static int stm32f4_flash_write(struct target_flash *f,
 #define FLASH_CR	(FPEC_BASE+0x10)
 #define FLASH_OPTCR	(FPEC_BASE+0x14)
 
-#define FLASH_CR_PG		(1 << 0)
-#define FLASH_CR_SER		(1 << 1)
-#define FLASH_CR_MER		(1 << 2)
+//#define FLASH_CR_PG		(1 << 0)
+//#define FLASH_CR_SER		(1 << 1)
+//#define FLASH_CR_MER		(1 << 2)
 #define FLASH_CR_PSIZE8		(0 << 8)
 #define FLASH_CR_PSIZE16	(1 << 8)
 #define FLASH_CR_PSIZE32	(2 << 8)
 #define FLASH_CR_PSIZE64	(3 << 8)
+#if !defined(FLASH_CR_MER1)
 #define FLASH_CR_MER1		(1 << 15)
-#define FLASH_CR_STRT		(1 << 16)
-#define FLASH_CR_EOPIE		(1 << 24)
+#endif
+//#define FLASH_CR_STRT		(1 << 16)
+//#define FLASH_CR_EOPIE		(1 << 24)
 #define FLASH_CR_ERRIE		(1 << 25)
-#define FLASH_CR_STRT		(1 << 16)
-#define FLASH_CR_LOCK		(1 << 31)
+//#define FLASH_CR_STRT		(1 << 16)
+//#define FLASH_CR_LOCK		(1 << 31)
 
-#define FLASH_SR_BSY		(1 << 16)
+//#define FLASH_SR_BSY		(1 << 16)
 
-#define FLASH_OPTCR_OPTLOCK	(1 << 0)
-#define FLASH_OPTCR_OPTSTRT	(1 << 1)
+//#define FLASH_OPTCR_OPTLOCK	(1 << 0)
+//#define FLASH_OPTCR_OPTSTRT	(1 << 1)
 #define FLASH_OPTCR_nDBANK	(1 << 29)
+#if !defined(FLASH_OPTCR_DB1M)
 #define FLASH_OPTCR_DB1M	(1 << 30)
+#endif
 
 #define KEY1 0x45670123
 #define KEY2 0xCDEF89AB

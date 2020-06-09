@@ -67,16 +67,16 @@ static int stm32f1_flash_write(struct target_flash *f,
 
 #define FLASH_CR_OBL_LAUNCH (1<<13)
 #define FLASH_CR_OPTWRE	(1 << 9)
-#define FLASH_CR_STRT	(1 << 6)
+//#define FLASH_CR_STRT	(1 << 6)
 #define FLASH_CR_OPTER	(1 << 5)
 #define FLASH_CR_OPTPG	(1 << 4)
-#define FLASH_CR_MER	(1 << 2)
+//#define FLASH_CR_MER	(1 << 2)
 #define FLASH_CR_PER	(1 << 1)
-#define FLASH_CR_PG		(1 << 0)
+//#define FLASH_CR_PG		(1 << 0)
 
 #define FLASH_OBR_RDPRT (1 << 1)
 
-#define FLASH_SR_BSY	(1 << 0)
+//#define FLASH_SR_BSY	(1 << 0)
 
 #define FLASH_OBP_RDP 0x1FFFF800
 #define FLASH_OBP_RDP_KEY 0x5aa5

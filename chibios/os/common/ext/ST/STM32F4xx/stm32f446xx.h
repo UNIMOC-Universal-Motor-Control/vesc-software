@@ -6937,7 +6937,7 @@ typedef struct
 #define FLASH_CR_MER_Pos               (2U)                                    
 #define FLASH_CR_MER_Msk               (0x1U << FLASH_CR_MER_Pos)              /*!< 0x00000004 */
 #define FLASH_CR_MER                   FLASH_CR_MER_Msk                        
-#define FLASH_CR_MER1                        FLASH_CR_MER
+#define FLASH_CR_MER1                  FLASH_CR_MER
 #define FLASH_CR_SNB_Pos               (3U)                                    
 #define FLASH_CR_SNB_Msk               (0x1FU << FLASH_CR_SNB_Pos)             /*!< 0x000000F8 */
 #define FLASH_CR_SNB                   FLASH_CR_SNB_Msk                        

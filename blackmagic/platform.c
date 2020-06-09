@@ -30,7 +30,7 @@ void platform_delay(uint32_t ms) {
 }
 
 uint32_t platform_time_ms(void) {
-	return ST2MS(chVTGetSystemTimeX());
+	return TIME_I2MS(chVTGetSystemTimeX());
 }
 
 void platform_srst_set_val(bool assert) {

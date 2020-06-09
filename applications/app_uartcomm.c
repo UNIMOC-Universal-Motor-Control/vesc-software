@@ -113,10 +113,10 @@ void app_uartcomm_start(void) {
 	sdStart(&HW_UART_DEV, &uart_cfg);
 	palSetPadMode(HW_UART_TX_PORT, HW_UART_TX_PIN, PAL_MODE_ALTERNATE(HW_UART_GPIO_AF) |
 			PAL_STM32_OSPEED_HIGHEST |
-			PAL_STM32_PUDR_PULLUP);
+			PAL_STM32_PUPDR_PULLUP);
 	palSetPadMode(HW_UART_RX_PORT, HW_UART_RX_PIN, PAL_MODE_ALTERNATE(HW_UART_GPIO_AF) |
 			PAL_STM32_OSPEED_HIGHEST |
-			PAL_STM32_PUDR_PULLUP);
+			PAL_STM32_PUPDR_PULLUP);
 
 	uart_is_running = true;
 }
@@ -224,7 +224,7 @@ static THD_FUNCTION(packet_process_thread, arg) {
 #endif
 
 	for(;;) {
-		chEvtWaitAnyTimeout(ALL_EVENTS, ST2MS(10));
+		chEvtWaitAnyTimeout(ALL_EVENTS, TIME_I2MS(10));
 
 		bool rx = true;
 		while (rx) {

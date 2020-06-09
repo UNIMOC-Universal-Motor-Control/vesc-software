@@ -81,7 +81,7 @@ const struct command_s nrf51_read_cmd_list[] = {
 #define NRF51_PAGE_SIZE 1024
 #define NRF52_PAGE_SIZE 4096
 
-#define SRAM_BASE          0x20000000
+//#define SRAM_BASE          0x20000000
 #define STUB_BUFFER_BASE   ALIGN(SRAM_BASE + sizeof(nrf51_flash_write_stub), 4)
 
 static const uint16_t nrf51_flash_write_stub[] = {

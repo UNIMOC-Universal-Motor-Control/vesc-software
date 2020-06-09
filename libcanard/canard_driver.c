@@ -140,7 +140,7 @@ static void readUniqueID(uint8_t* out_uid) {
 
 static void makeNodeStatusMessage(uint8_t buffer[UAVCAN_NODE_STATUS_MESSAGE_SIZE]) {
 	memset(buffer, 0, UAVCAN_NODE_STATUS_MESSAGE_SIZE);
-	const uint32_t uptime_sec = ST2S(chVTGetSystemTimeX());
+	const uint32_t uptime_sec = TIME_I2S(chVTGetSystemTimeX());
 	canardEncodeScalar(buffer,  0, 32, &uptime_sec);
 	canardEncodeScalar(buffer, 32,  2, &node_health);
 	canardEncodeScalar(buffer, 34,  3, &node_mode);
@@ -330,7 +330,7 @@ static THD_FUNCTION(canard_thread, arg) {
 			rx_frame.data_len = rxmsg->DLC;
 			memcpy(rx_frame.data, rxmsg->data8, rxmsg->DLC);
 
-			canardHandleRxFrame(&canard, &rx_frame, ST2US(chVTGetSystemTimeX()));
+			canardHandleRxFrame(&canard, &rx_frame, TIME_I2US(chVTGetSystemTimeX()));
 		}
 
 		for (const CanardCANFrame* txf = NULL; (txf = canardPeekTxQueue(&canard)) != NULL;) {
@@ -338,9 +338,9 @@ static THD_FUNCTION(canard_thread, arg) {
 			canardPopTxQueue(&canard);
 		}
 
-		if (ST2MS(chVTTimeElapsedSinceX(last_status_time)) >= 1000) {
+		if (TIME_I2MS(chVTTimeElapsedSinceX(last_status_time)) >= 1000) {
 			last_status_time = chVTGetSystemTimeX();
-			canardCleanupStaleTransfers(&canard, ST2US(chVTGetSystemTimeX()));
+			canardCleanupStaleTransfers(&canard, TIME_I2US(chVTGetSystemTimeX()));
 
 			uint8_t buffer[UAVCAN_NODE_STATUS_MESSAGE_SIZE];
 			makeNodeStatusMessage(buffer);
@@ -355,7 +355,7 @@ static THD_FUNCTION(canard_thread, arg) {
 					UAVCAN_NODE_STATUS_MESSAGE_SIZE);
 		}
 
-		if (ST2MS(chVTTimeElapsedSinceX(last_esc_status_time)) >= 1000 / conf->send_can_status_rate_hz &&
+		if (TIME_I2MS(chVTTimeElapsedSinceX(last_esc_status_time)) >= 1000 / conf->send_can_status_rate_hz &&
 				conf->send_can_status != CAN_STATUS_DISABLED) {
 			last_esc_status_time = chVTGetSystemTimeX();
 			sendEscStatus();
