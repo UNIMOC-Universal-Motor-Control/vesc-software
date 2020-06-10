@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 -D_GNU_SOURCE
+  USE_OPT = -Og -ggdb -fomit-frame-pointer -falign-functions=16 -D_GNU_SOURCE
   USE_OPT += -fsingle-precision-constant -Wdouble-promotion -specs=nosys.specs -std=gnu99
   USE_OPT += -DUSE_STDPERIPH_DRIVER
 endif

@@ -75,13 +75,13 @@ enum stm32h7_regs
 #define H7_IWDG_BASE        0x58004c00
 #define FPEC1_BASE			0x52002000
 #define FPEC2_BASE			0x52002100
-#define FLASH_SR_BSY		(1 <<  0)
+//#define FLASH_SR_BSY		(1 <<  0)
 #define FLASH_SR_WBNE		(1 <<  1)
 #define FLASH_SR_QW			(1 <<  2)
 #define FLASH_SR_CRC_BUSY	(1 <<  3)
-#define FLASH_SR_EOP		(1 << 16)
-#define FLASH_SR_WRPERR		(1 << 17)
-#define FLASH_SR_PGSERR		(1 << 18)
+//#define FLASH_SR_EOP		(1 << 16)
+//#define FLASH_SR_WRPERR		(1 << 17)
+//#define FLASH_SR_PGSERR		(1 << 18)
 #define FLASH_SR_STRBERR	(1 << 19)
 #define FLASH_SR_INCERR		(1 << 21)
 #define FLASH_SR_OPERR		(1 << 22)
@@ -95,9 +95,9 @@ enum stm32h7_regs
 #define FLASH_SR_ERROR_MASK	(										\
 		FLASH_SR_WRPERR  | FLASH_SR_PGSERR  | FLASH_SR_STRBERR |	\
 		FLASH_SR_INCERR  | FLASH_SR_OPERR    | FLASH_SR_ERROR_READ)
-#define FLASH_CR_LOCK		(1 << 0)
-#define FLASH_CR_PG			(1 << 1)
-#define FLASH_CR_SER		(1 << 2)
+//#define FLASH_CR_LOCK		(1 << 0)
+//#define FLASH_CR_PG			(1 << 1)
+//#define FLASH_CR_SER		(1 << 2)
 #define FLASH_CR_BER		(1 << 3)
 #define FLASH_CR_PSIZE8		(0 << 4)
 #define FLASH_CR_PSIZE16	(1 << 4)
@@ -105,12 +105,12 @@ enum stm32h7_regs
 #define FLASH_CR_PSIZE64	(3 << 4)
 #define FLASH_CR_FW			(1 << 6)
 #define FLASH_CR_START		(1 << 7)
-#define FLASH_CR_SNB_1		(1 << 8)
-#define FLASH_CR_SNB		(3 << 8)
+//#define FLASH_CR_SNB_1		(1 << 8)
+//#define FLASH_CR_SNB		(3 << 8)
 #define FLASH_CR_CRC_EN		(1 << 15)
 
-#define FLASH_OPTCR_OPTLOCK	(1 << 0)
-#define FLASH_OPTCR_OPTSTRT	(1 << 1)
+//#define FLASH_OPTCR_OPTLOCK	(1 << 0)
+//#define FLASH_OPTCR_OPTSTRT	(1 << 1)
 
 #define FLASH_OPTSR_IWDG1_SW	(1 <<  4)
 
