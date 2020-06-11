@@ -21,7 +21,9 @@
 MEMORY
 {
     flash0 (rx) : org = 0x08000000, len = 16k
-    flash1 (rx) : org = 0x08004000, len = 496k
+    eepage0(rw) : org = 0x08004000, len = 16k
+    eepage1(rw) : org = 0x08008000, len = 16k
+    flash1 (rx) : org = 0x0800C000, len = 464k
     flash2 (rx) : org = 0x00000000, len = 0
     flash3 (rx) : org = 0x00000000, len = 0
     flash4 (rx) : org = 0x00000000, len = 0

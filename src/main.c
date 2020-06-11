@@ -347,8 +347,8 @@ int main(void) {
 	}
 #endif
 
-	timeout_init();
-	timeout_configure(appconf->timeout_msec, appconf->timeout_brake_current);
+//	timeout_init();
+//	timeout_configure(appconf->timeout_msec, appconf->timeout_brake_current);
 	imu_init(&appconf->imu_conf);
 
 	mempools_free_appconf(appconf);
