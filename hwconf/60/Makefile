@@ -123,7 +123,7 @@ LDSCRIPT= ld_eeprom_emu.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CSRC = $(ALLCSRC) board.c ../common/hw.c hw_custom.c
+CSRC = $(ALLCSRC) board.c ../common/hw.c hw_custom.c ../common/drv8301.c
 
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global

@@ -17,19 +17,22 @@
 /*
  * ST32F446xE memory setup.
  * Note: Use of ram1 and ram2 is mutually exclusive with use of ram0.
+ * Note: flash2 length decreased by 8 bytes to use it as hardcoded CRC
+ * flags.
  */
 MEMORY
 {
     flash0 (rx) : org = 0x08000000, len = 16k
     eepage0(rw) : org = 0x08004000, len = 16k
     eepage1(rw) : org = 0x08008000, len = 16k
-    flash1 (rx) : org = 0x0800C000, len = 464k
+    flash1 (rx) : org = 0x0800C000, len = 393216 - 16	/* NEW_APP_MAX_SIZE - CRC_INFO */
     flash2 (rx) : org = 0x00000000, len = 0
     flash3 (rx) : org = 0x00000000, len = 0
     flash4 (rx) : org = 0x00000000, len = 0
     flash5 (rx) : org = 0x00000000, len = 0
     flash6 (rx) : org = 0x00000000, len = 0
     flash7 (rx) : org = 0x00000000, len = 0
+    crcinfo : org = 0x0805FFF0, len = 8		/* CRC info */
     ram0   (wx) : org = 0x20000000, len = 112k    /* SRAM1 */
     ram1   (wx) : org = 0x00000000, len = 0
     ram2   (wx) : org = 0x00000000, len = 0
@@ -76,7 +79,7 @@ REGION_ALIAS("PROCESS_STACK_RAM", ram0);
 
 /* RAM region to be used for data segment.*/
 REGION_ALIAS("DATA_RAM", ram0);
-REGION_ALIAS("DATA_RAM_LMA", flash0);
+REGION_ALIAS("DATA_RAM_LMA", flash1);
 
 /* RAM region to be used for BSS segment.*/
 REGION_ALIAS("BSS_RAM", ram0);
