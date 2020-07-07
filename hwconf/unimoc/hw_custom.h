@@ -34,7 +34,7 @@
  */
 #define HW_HAS_PHASE_SHUNTS
 
-#define HW_USE_BRK
+//#define HW_USE_BRK
 
 #define HW_HAS_STM32F446
 #define HW_HAS_20MHZ_XTAL
