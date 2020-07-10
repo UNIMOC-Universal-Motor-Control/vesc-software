@@ -33,6 +33,7 @@
  * which allows sampling in V0 and V7, and some extra filtering.
  */
 #define HW_HAS_PHASE_SHUNTS
+#define INVERTED_SHUNT_POLARITY
 
 //#define HW_USE_BRK
 
